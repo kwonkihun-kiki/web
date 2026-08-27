@@ -1,0 +1,153 @@
+<title>IAM Final Season (Dark)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+  canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: block; }
+  #preview-badge {
+    position: fixed;
+    bottom: 18px; right: 18px;
+    z-index: 10;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 9px; font-weight: 400;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.22); pointer-events: none;
+  }
+</style>
+
+<canvas id="iamParticleCanvas"></canvas>
+<div id="preview-badge">Preview · IAM Shop — Dark</div>
+
+<script>
+(function(){
+  var C = document.getElementById('iamParticleCanvas');
+  if (!C) return;
+  var ctx = C.getContext('2d');
+  var W, H, particles = [], phase, t0;
+  var isMob, STEP, MAX_PTS, P_SIZE;
+  var TEXT  = 'FINAL SEASON OFF';
+  var LINES = ['FINAL','SEASON','OFF'];
+
+  function setup() {
+    isMob   = window.innerWidth < 768;
+    STEP    = 3;
+    MAX_PTS = isMob ? 5000 : 8000;
+    P_SIZE  = isMob ? 1.2 : 1.4;
+  }
+
+  function resize() {
+    W = C.width  = window.innerWidth;
+    H = C.height = window.innerHeight;
+    setup(); initParticles();
+    phase = 'gather'; t0 = performance.now();
+  }
+  window.addEventListener('resize', resize);
+
+  function getBrandFS() {
+    var fs, mc = document.createElement('canvas').getContext('2d');
+    if (isMob) {
+      fs = Math.min(Math.floor(W * 0.30), 130);
+      mc.font = '700 ' + fs + 'px "Helvetica Neue",Helvetica,Arial,sans-serif';
+      while (mc.measureText('SEASON').width > W * 0.85 && fs > 14) {
+        fs--; mc.font = '700 ' + fs + 'px "Helvetica Neue",Helvetica,Arial,sans-serif';
+      }
+    } else {
+      fs = Math.min(Math.floor(H * 0.11), 120);
+      mc.font = '700 ' + fs + 'px "Helvetica Neue",Helvetica,Arial,sans-serif';
+      while (mc.measureText(TEXT).width > W * 0.88 && fs > 14) {
+        fs--; mc.font = '700 ' + fs + 'px "Helvetica Neue",Helvetica,Arial,sans-serif';
+      }
+    }
+    return fs;
+  }
+
+  function sampleText() {
+    var bfs = getBrandFS();
+    var off = document.createElement('canvas'); off.width = W; off.height = H;
+    var oc  = off.getContext('2d');
+    oc.fillStyle = '#000'; oc.fillRect(0, 0, W, H);
+    oc.fillStyle = '#fff';
+    oc.font = '700 ' + bfs + 'px "Helvetica Neue",Helvetica,Arial,sans-serif';
+    oc.textAlign = 'center'; oc.textBaseline = 'middle';
+    if (isMob) {
+      var lh = bfs * 1.3, totalH = LINES.length * lh;
+      var startY = (H - totalH) / 2 + lh / 2;
+      for (var l = 0; l < LINES.length; l++)
+        oc.fillText(LINES[l], W / 2, startY + l * lh);
+    } else {
+      oc.fillText(TEXT, W / 2, H / 2);
+    }
+    var data = oc.getImageData(0, 0, W, H).data;
+    var pts  = [];
+    for (var y = 0; y < H; y += STEP)
+      for (var x = 0; x < W; x += STEP)
+        if (data[(y * W + x) * 4] > 128) pts.push([x, y]);
+    if (pts.length > MAX_PTS) {
+      var s = pts.length / MAX_PTS, sub = [];
+      for (var i = 0; i < MAX_PTS; i++) sub.push(pts[Math.floor(i * s)]);
+      pts = sub;
+    }
+    return pts;
+  }
+
+  function initParticles() {
+    var pts = sampleText(), n = pts.length;
+    while (particles.length < n) particles.push({
+      x: Math.random() * W, y: Math.random() * H,
+      tx: 0, ty: 0, sx: 0, sy: 0,
+      size: P_SIZE, wp: Math.random() * Math.PI * 2
+    });
+    particles.length = n;
+    for (var i = 0; i < n; i++) {
+      particles[i].tx = pts[i][0]; particles[i].ty = pts[i][1];
+      particles[i].size = P_SIZE;
+    }
+  }
+
+  function setScatterTargets() {
+    var cx = W / 2, cy = H / 2;
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      var angle = Math.atan2(p.ty - cy, p.tx - cx) + (Math.random() - 0.5) * 1.2;
+      var dist  = 300 + Math.random() * 520;
+      p.sx = p.tx + Math.cos(angle) * dist;
+      p.sy = p.ty + Math.sin(angle) * dist;
+    }
+  }
+
+  var T_GATHER=1800, T_WIGGLE1=1000, T_HOLD=2500, T_WIGGLE2=1000, T_SCATTER=1400;
+  function ease(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2; }
+  function wiggleXY(p, ts, el, dur, amp) {
+    var a = Math.sin((el / dur) * Math.PI) * amp;
+    p.x += (p.tx + Math.sin(ts * 0.006  + p.wp      ) * a - p.x) * 0.22;
+    p.y += (p.ty + Math.cos(ts * 0.0072 + p.wp + 1.5) * a - p.y) * 0.22;
+  }
+
+  function render(ts) {
+    requestAnimationFrame(render);
+    var el = ts - t0;
+    if      (phase==='gather'  && el > T_GATHER)  { phase='wiggle1'; t0=ts; el=0; }
+    else if (phase==='wiggle1' && el > T_WIGGLE1) { phase='hold';    t0=ts; el=0; }
+    else if (phase==='hold'    && el > T_HOLD)    { phase='wiggle2'; t0=ts; el=0; }
+    else if (phase==='wiggle2' && el > T_WIGGLE2) { phase='scatter'; t0=ts; el=0; setScatterTargets(); }
+    else if (phase==='scatter' && el > T_SCATTER) { phase='gather';  t0=ts; el=0; }
+
+    ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#fff';
+
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      if      (phase === 'gather')  { var t  = ease(Math.min(1, el/T_GATHER));  p.x += (p.tx-p.x)*t*0.09;  p.y += (p.ty-p.y)*t*0.09; }
+      else if (phase === 'wiggle1') { wiggleXY(p, ts, el, T_WIGGLE1, 2.5); }
+      else if (phase === 'hold')    { p.x += (p.tx-p.x)*0.25; p.y += (p.ty-p.y)*0.25; }
+      else if (phase === 'wiggle2') { wiggleXY(p, ts, el, T_WIGGLE2, 2.5); }
+      else                          { var t2 = ease(Math.min(1, el/T_SCATTER)); p.x += (p.sx-p.x)*t2*0.08; p.y += (p.sy-p.y)*t2*0.08; }
+      ctx.fillRect(p.x, p.y, p.size, p.size);
+    }
+  }
+
+  resize();
+  requestAnimationFrame(render);
+})();
+</script>
