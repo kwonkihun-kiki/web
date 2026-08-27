@@ -3,845 +3,1885 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kwon Kihun — Portfolio 2026</title>
+<title>Kihun Kwon</title>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
 
-:root {
-  --pad: 44px;
-  --pad-v: 36px;
-  --rule: 1px solid #e0e0e0;
-  --gray: #888;
-  --lgray: #bbb;
-  --red: #d63c2f;
-  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-html, body {
-  width: 100%; height: 100%;
-  overflow: hidden;
-  background: #fff;
-  color: #000;
-  font-family: var(--font);
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ── SLIDES ── */
-#deck {
-  width: 100vw; height: 100vh;
-  position: relative;
-}
-
-.slide {
-  position: absolute;
-  inset: 0;
-  padding: var(--pad-v) var(--pad);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-  display: flex;
-  flex-direction: column;
-}
-.slide.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-/* ── PROGRESS + COUNTER ── */
-#progress {
-  position: fixed;
-  bottom: 0; left: 0;
-  height: 1px;
-  background: var(--red);
-  transition: width 0.3s ease;
-  z-index: 200;
-}
-#counter {
-  position: fixed;
-  bottom: 18px; right: var(--pad);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  color: var(--lgray);
-  z-index: 200;
-}
-
-/* ── COMMON ELEMENTS ── */
-.slide-label {
-  font-size: 8px;
-  letter-spacing: 0.2em;
-  color: var(--gray);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.rule { width: 100%; height: 0; border-top: var(--rule); }
-.rule-v { width: 0; height: 100%; border-left: var(--rule); flex-shrink: 0; }
-
-/* ── COVER ── */
-#s-cover {
-  justify-content: flex-end;
-}
-.cover-name {
-  font-size: clamp(52px, 8.5vw, 108px);
-  letter-spacing: -0.01em;
-  line-height: 1;
-  hyphens: none;
-  word-break: normal;
-}
-.cover-sub {
-  margin-top: 14px;
-  font-size: 13px;
-  color: var(--gray);
-  letter-spacing: 0.04em;
-}
-.cover-bottom {
-  position: absolute;
-  bottom: var(--pad-v);
-  right: var(--pad);
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  color: var(--lgray);
-  text-align: right;
-  line-height: 1.7;
-}
-
-/* ── CV SLIDE ── */
-#s-cv {
-  flex-direction: row;
-  gap: 0;
-}
-.cv-left {
-  width: 220px;
-  flex-shrink: 0;
-  padding-right: 36px;
-  border-right: var(--rule);
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-.cv-right {
-  flex: 1;
-  padding-left: 36px;
-  overflow: hidden;
-  display: flex;
-  gap: 36px;
-}
-.cv-name { font-size: 18px; letter-spacing: 0.02em; line-height: 1.1; }
-.cv-title { font-size: 10px; color: var(--gray); margin-top: 6px; }
-.cv-bio { font-size: 8.5px; color: var(--gray); margin-top: 12px; line-height: 1.55; }
-.cv-contact { margin-top: 20px; }
-.cv-contact-row { display: flex; gap: 10px; margin-bottom: 4px; }
-.cv-contact-label { font-size: 8px; color: var(--lgray); width: 64px; flex-shrink: 0; }
-.cv-contact-val { font-size: 8.5px; }
-.cv-section { flex: 1; }
-.cv-section-title {
-  font-size: 7px;
-  letter-spacing: 0.2em;
-  color: var(--gray);
-  text-transform: uppercase;
-  padding-bottom: 8px;
-  border-bottom: var(--rule);
-  margin-bottom: 12px;
-}
-.cv-item { margin-bottom: 10px; }
-.cv-item-date { font-size: 8px; color: var(--lgray); margin-bottom: 2px; }
-.cv-item-name { font-size: 9px; }
-.cv-item-desc { font-size: 8px; color: var(--gray); margin-top: 1px; }
-
-/* ── INDEX ── */
-#s-index {
-  flex-direction: row;
-  gap: 0;
-}
-.index-left {
-  width: 120px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: flex-end;
-  padding-bottom: 4px;
-}
-.index-title-big {
-  font-size: 8px;
-  letter-spacing: 0.2em;
-  color: var(--gray);
-  text-transform: uppercase;
-}
-.index-right { flex: 1; padding-left: 48px; }
-.index-list { list-style: none; }
-.index-item {
-  display: grid;
-  grid-template-columns: 32px 1fr 80px 80px;
-  align-items: baseline;
-  padding: 10px 0;
-  border-bottom: var(--rule);
-  font-size: 11px;
-  cursor: pointer;
-  transition: color 0.15s;
-}
-.index-item:first-child { border-top: var(--rule); }
-.index-item:hover { color: var(--red); }
-.index-item:hover .index-num { color: var(--red); }
-.index-num { font-size: 8.5px; color: var(--lgray); }
-.index-year { font-size: 8.5px; color: var(--lgray); text-align: right; }
-.index-type { font-size: 8.5px; color: var(--lgray); text-align: right; }
-
-/* ── PROJECT TITLE SLIDE ── */
-.slide-proj-title {
-  flex-direction: row;
-  overflow: hidden;
-}
-.proj-meta {
-  width: 260px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-right: 40px;
-  border-right: var(--rule);
-  padding-bottom: 4px;
-  overflow: hidden;
-}
-.proj-num {
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  color: var(--red);
-  margin-bottom: 14px;
-}
-.proj-title-big {
-  font-size: clamp(18px, 2.2vw, 30px);
-  line-height: 1.05;
-  hyphens: none;
-  word-break: normal;
-  letter-spacing: -0.01em;
-}
-.proj-year-type {
-  margin-top: 14px;
-  font-size: 9px;
-  color: var(--gray);
-  letter-spacing: 0.05em;
-}
-.proj-desc {
-  margin-top: 24px;
-  font-size: 9px;
-  color: var(--gray);
-  line-height: 1.65;
-  max-width: 220px;
-  word-break: keep-all;
-}
-.proj-thumb {
-  flex: 1;
-  min-width: 0;
-  padding-left: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  overflow: hidden;
-}
-.proj-thumb img {
-  flex: 1;
-  min-width: 0;
-  max-width: 90%;
-  max-height: 72%;
-  object-fit: contain;
-  display: block;
-}
-
-/* 415-1 photo grid — use cover to fill cells */
-.grid-img-cover { object-fit: cover; }
-
-/* CV link style */
-.cv-contact-val a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 0.5px solid currentColor;
-  padding-bottom: 1px;
-}
-.cv-contact-val a:hover { opacity: 0.55; }
-
-/* ── IMAGE GRID SLIDES ── */
-.slide-images {
-  flex-direction: column;
-  gap: 0;
-  overflow: hidden;
-}
-.slide-images-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  border-bottom: var(--rule);
-  margin-bottom: 12px;
-  flex-shrink: 0;
-}
-.img-grid-area {
-  flex: 1;
-  min-height: 0;       /* key: allows flex child to shrink */
-  overflow: hidden;
-  width: 100%;
-}
-
-/* grid layouts — height:100% + grid-auto-rows:1fr fills the space */
-.grid-4col,
-.grid-3col,
-.grid-2col {
-  height: 100%;
-  gap: 6px;
-  display: grid;
-}
-.grid-4col { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 1fr; }
-.grid-3col { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 1fr; }
-.grid-2col { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; }
-
-.grid-img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
-  min-height: 0;
-}
-
-/* jumble2 custom rows */
-.jumble2-wrap {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.j2-row { display: grid; gap: 6px; flex: 1; min-height: 0; }
-.j2-row.cols3 { grid-template-columns: repeat(3, 1fr); }
-.j2-row.cols2 { grid-template-columns: repeat(2, 1fr); }
-.j2-row .grid-img { height: 100%; }
-
-/* ── BACK COVER ── */
-#s-back {
-  justify-content: center;
-  align-items: flex-start;
-}
-.back-content {
-  margin-top: auto;
-  margin-bottom: auto;
-}
-.back-thanks {
-  font-size: clamp(20px, 3vw, 38px);
-  letter-spacing: -0.01em;
-  line-height: 1.15;
-  hyphens: none;
-}
-.back-url {
-  margin-top: 24px;
-  font-size: 11px;
-  color: var(--gray);
-  letter-spacing: 0.04em;
-}
-.back-url a {
-  color: #000;
-  text-decoration: none;
-  border-bottom: 0.5px solid #000;
-  padding-bottom: 1px;
-  transition: color 0.2s;
-}
-.back-url a:hover { color: var(--gray); }
-.back-right {
-  position: absolute;
-  bottom: var(--pad-v);
-  right: var(--pad);
-  font-size: 9px;
-  color: var(--lgray);
-  letter-spacing: 0.1em;
-  text-align: right;
-  line-height: 1.7;
-}
-
-/* ── PDF download button ── */
-#pdf-btn {
-  position: fixed;
-  top: 20px; right: var(--pad);
-  font-size: 8px;
-  letter-spacing: 0.14em;
-  color: var(--lgray);
-  text-transform: uppercase;
-  cursor: pointer;
-  z-index: 200;
-  background: none;
-  border: none;
-  font-family: var(--font);
-  padding: 0;
-  transition: color 0.15s;
-}
-#pdf-btn:hover { color: #000; }
-
-/* print */
-@media print {
-  @page { size: A4 landscape; margin: 15mm 20mm; }
-  html, body { overflow: visible !important; height: auto !important; }
-  #deck { height: auto !important; position: relative !important; }
-  .slide {
-    opacity: 1 !important;
-    position: relative !important;
-    inset: auto !important;
-    height: 190mm !important;
-    page-break-after: always;
-    display: flex !important;
+  :root {
+    --fg: #000;
+    --bg: #fff;
+    --muted: #aaa;
+    --dim: #d8d8d8;
+    --hover-bg: #f7f7f7;
   }
-  #progress, #counter, #pdf-btn { display: none !important; }
-}
+
+  *, *::before, *::after { cursor: none !important; }
+
+  /* ── 커스텀 커서 ── */
+  #cursor {
+    position: fixed; top: 0; left: 0;
+    width: 7px; height: 7px;
+    background: #000; border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.14s ease, height 0.14s ease, background 0.14s ease, border-radius 0.14s ease;
+    will-change: transform;
+  }
+  #cursor.on-link { width: 26px; height: 26px; background: transparent; border: 0.5px solid #000; }
+  #cursor.on-link-active { width: 20px; height: 20px; background: #000; border: none; }
+
+  /* ── 좌표 이스터에그 ── */
+  #coords {
+    position: fixed; top: 0; left: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: #bbb; letter-spacing: 0.05em;
+    pointer-events: none; z-index: 9998;
+    opacity: 0; transition: opacity 0.5s ease; white-space: nowrap;
+  }
+  #coords.visible { opacity: 1; }
+
+  /* ── 타이핑 이스터에그 ── */
+  #typewriter-overlay {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; touch-action: none; z-index: 8000;
+    opacity: 0; transition: opacity 0.25s ease;
+  }
+  #typewriter-overlay.show { pointer-events: none; touch-action: none; }
+  #typewriter-overlay:not(.show) { touch-action: auto; }
+  #typewriter-overlay.show { opacity: 1; }
+  #typewriter-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(13px, 1.5vw, 17px); font-weight: 400;
+    color: #000; letter-spacing: 0.01em; line-height: 1.75;
+    text-align: center; max-width: 460px; padding: 12px 28px; white-space: pre-wrap;
+    background: rgba(255,255,255,0.95);
+  }
+  #typewriter-text::after { content: '|'; display: inline; animation: blink 0.75s step-end infinite; color: var(--muted); }
+  #typewriter-text.done::after { display: none; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* 홈 프로필 이미지 클릭 가능 표시 */
+  #home .home-img img { cursor: none; }
+  #home .home-img { cursor: none; }
+
+  /* ── 기본 ── */
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; line-height: 1.6; font-weight: 400;
+    height: 100vh; overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  body { display: flex; flex-direction: column; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── NAV ── */
+  nav.topnav {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 16px 24px 14px; flex-shrink: 0; border-bottom: 0.5px solid #000;
+  }
+  nav.topnav .name { font-size: 12px; font-weight: 500; letter-spacing: 0.01em; }
+  .kk-trigger { display: inline-block; }
+  nav.topnav .links { display: flex; gap: 28px; }
+  nav.topnav .links a { font-size: 11px; color: var(--muted); letter-spacing: 0.02em; }
+  nav.topnav .links a.active { color: var(--fg); }
+  nav.topnav .links a:hover { color: var(--fg); }
+
+  /* ── Side 드롭다운 ── */
+  .nav-dropdown { position: relative; }
+  .nav-dropdown-trigger {
+    font-size: 11px; color: var(--muted); letter-spacing: 0.02em;
+    background: none; border: none; padding: 0; font-family: 'JetBrains Mono', monospace;
+    cursor: none;
+  }
+  .nav-dropdown-trigger:hover,
+  .nav-dropdown-trigger.active { color: var(--fg); }
+  .nav-dropdown-menu {
+    display: none; position: absolute; top: calc(100% + 10px); left: 0;
+    background: var(--bg); border: 0.5px solid #000;
+    min-width: 90px; z-index: 100;
+  }
+  .nav-dropdown-menu.open { display: block; }
+  .nav-dropdown-menu a {
+    display: block; padding: 8px 12px;
+    font-size: 11px; color: var(--muted); letter-spacing: 0.02em;
+  }
+  .nav-dropdown-menu a:hover,
+  .nav-dropdown-menu a.active { color: var(--fg); background: var(--hover-bg); }
+
+  /* ── PAGE ── */
+  main.page { flex: 1; overflow: hidden; display: none; min-height: 0; }
+  main.page.active { display: flex; }
+  #ceramic.active { display: block; overflow-y: auto; }
+
+  /* ── HOME ── */
+  #home { flex-direction: column; justify-content: space-between; padding: 40px 24px 24px; }
+  #home .big {
+    font-size: clamp(64px, 13vw, 200px); line-height: 0.9;
+    font-weight: 400; letter-spacing: -0.04em; margin-top: auto; margin-bottom: 6vh;
+  }
+  #home .big .l2 { display: block; }
+  #home .home-img { display: flex; justify-content: center; margin: auto 0; }
+  #home .home-img img {
+    height: clamp(120px, 18vh, 200px); width: auto; display: block;
+    mix-blend-mode: multiply; opacity: 0; transition: opacity 0.4s ease;
+  }
+  #home .home-img img.loaded { opacity: 1; }
+  #home .meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding-top: 20px; }
+  #home .meta .label { font-size: 10px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 8px; }
+  #home .meta .val { font-size: 12px; }
+
+  /* ── WORKS ── */
+  #works { padding: 0; }
+  .works-split { display: grid; grid-template-columns: 1fr 1fr; width: 100%; height: 100%; min-height: 0; }
+
+  .works-list {
+    border-right: 0.5px solid #000; overflow-y: auto;
+    scrollbar-width: none; display: flex; flex-direction: column;
+    min-height: 0;
+  }
+  .works-list::-webkit-scrollbar { display: none; }
+
+  .col-head {
+    display: grid; grid-template-columns: 36px 1fr 48px; gap: 12px;
+    font-size: 10px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 14px 24px 12px; flex-shrink: 0;
+  }
+  .col-head span:last-child { text-align: right; }
+
+  ol.project-list { list-style: none; }
+  ol.project-list li {
+    display: grid; grid-template-columns: 36px 1fr 48px; gap: 12px;
+    padding: 9px 24px; font-size: 12px; transition: background 0.04s;
+  }
+  ol.project-list li .n { color: var(--dim); font-size: 10px; padding-top: 1px; }
+  ol.project-list li .y { color: var(--muted); font-size: 11px; text-align: right; }
+  ol.project-list li:hover { background: var(--hover-bg); }
+  ol.project-list li.active .t { font-weight: 500; }
+  ol.project-list li.active .n { color: var(--muted); }
+
+  .works-right { overflow-y: auto; scrollbar-width: none; position: relative; }
+  .works-right::-webkit-scrollbar { display: none; }
+
+  /* ── 아카이브 뷰 ── */
+  #archive-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+  .archive-col { display: flex; flex-direction: column; }
+  .archive-empty {
+    height: 100%; display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--dim); min-height: 200px;
+  }
+  .archive-item { padding: 16px; }
+  .archive-thumb {
+    width: 100%; margin-bottom: 16px; overflow: hidden;
+  }
+  .archive-thumb img {
+    width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.35s ease;
+  }
+  .archive-thumb img.loaded { opacity: 1; }
+  .archive-row { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 12px; }
+  .archive-row .a-title { font-size: 13px; font-weight: 500; line-height: 1.3; }
+  .archive-row .a-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.04em; margin-top: 5px; }
+  .archive-row .a-nolink { font-size: 10px; color: var(--dim); white-space: nowrap; }
+
+  /* ── 상세뷰 ── */
+  #detail-view { display: none; padding: 28px 28px 56px; }
+  #detail-view.show { display: block; }
+
+  .detail-back {
+    font-size: 10px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase;
+    margin-bottom: 36px; display: inline-block;
+  }
+  .detail-back:hover { color: var(--fg); }
+  .detail-title { font-size: 24px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 10px; }
+  .detail-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 28px; }
+  .detail-meta { display: grid; grid-template-columns: 72px 1fr; gap: 9px 24px; margin-bottom: 36px; }
+  .detail-meta .dm-l { font-size: 10px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding-top: 1px; }
+  .detail-meta .dm-v { font-size: 12px; }
+
+  /* 상세뷰 이미지 레이아웃 */
+  #detail-images { width: 100%; }
+
+  /* default: 세로 나열 */
+  .layout-default .d-img-wrap { width: 100%; margin-bottom: 12px; background: none; }
+  .layout-default .d-img-wrap img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-default .d-img-wrap img.loaded { opacity: 1; }
+
+  /* grid2: 2열 그리드 */
+  .layout-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }
+  .layout-grid2 .d-img-wrap { background: none; }
+  .layout-grid2 .d-img-wrap img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-grid2 .d-img-wrap img.loaded { opacity: 1; }
+
+  /* confessions: 4열 — 클릭 뒤집기 */
+  .layout-confessions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; align-items: start; }
+  .layout-confessions .d-img-wrap { background: none; position: relative; perspective: 600px; cursor: none; }
+  .layout-confessions .d-img-wrap img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-confessions .d-img-wrap img.loaded { opacity: 1; }
+  .layout-confessions .flip-inner {
+    position: relative; width: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+  }
+  .layout-confessions .d-img-wrap.flipped .flip-inner { transform: rotateY(180deg); }
+  .layout-confessions .img-base {
+    display: block; width: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  }
+  .layout-confessions .img-hover {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; display: block !important;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    transform: rotateY(180deg);
+  }
+
+  /* confessions-wide: 13~24용, 모바일에서 2열로 */
+  .layout-confessions-wide { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; align-items: start; }
+  .layout-hover { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .layout-hover .d-img-wrap { background: #f3f3f3; position: relative; overflow: hidden; }
+  .layout-hover .d-img-wrap img { width: 100%; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-hover .d-img-wrap img.loaded { opacity: 1; }
+  .layout-hover .d-img-wrap .img-hover {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; opacity: 0; transition: opacity 0.2s; display: block !important;
+  }
+  .layout-hover .d-img-wrap:hover .img-base { opacity: 0 !important; }
+  .layout-hover .d-img-wrap:hover .img-hover { opacity: 1 !important; }
+
+  /* bds_custom: 3열 그리드 */
+  .layout-bds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; align-items: start; }
+  .layout-bds .d-img-wrap { background: none; }
+  .layout-bds .d-img-wrap img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-bds .d-img-wrap img.loaded { opacity: 1; }
+
+  /* nondry: 4열 그리드 */
+  .layout-nondry { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; align-items: start; }
+  .layout-nondry .d-img-wrap { background: none; }
+  .layout-nondry .d-img-wrap img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-nondry .d-img-wrap img.loaded { opacity: 1; }
+
+  /* hoonies: grid2 + 7번째 전체너비 */
+  .layout-hoonies { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: start; }
+  .layout-hoonies .d-img-wrap { background: none; }
+  .layout-hoonies .d-img-wrap img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-hoonies .d-img-wrap img.loaded { opacity: 1; }
+  .layout-hoonies .d-img-wrap.full-row { grid-column: 1 / -1; }
+
+  /* jumble1: 4열 */
+  .layout-jumble1 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .layout-jumble1 .d-img-wrap { background: #f3f3f3; }
+  .layout-jumble1 .d-img-wrap img { width: 100%; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-jumble1 .d-img-wrap img.loaded { opacity: 1; }
+
+  /* jumble2: 3/2/2... */
+  .layout-jumble2 { display: flex; flex-direction: column; gap: 6px; }
+  .layout-jumble2 .j2-row { display: grid; gap: 6px; }
+  .layout-jumble2 .j2-row.cols3 { grid-template-columns: repeat(3, 1fr); }
+  .layout-jumble2 .j2-row.cols2 { grid-template-columns: repeat(2, 1fr); }
+  .layout-jumble2 .d-img-wrap { background: #f3f3f3; }
+  .layout-jumble2 .d-img-wrap img { width: 100%; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-jumble2 .d-img-wrap img.loaded { opacity: 1; }
+
+  /* gorillas: 4열 */
+  .layout-gorillas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; align-items: start; }
+  .layout-gorillas .d-img-wrap { background: none; }
+  .layout-gorillas .d-img-wrap img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-gorillas .d-img-wrap img.loaded { opacity: 1; }
+  .layout-gorillas .d-img-wrap.odd img { width: 80%; margin: 0 auto; display: block; }
+
+  /* reconstruction: 그래픽(좌) + 사진(우) 나란히 */
+  .layout-reconstruction { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+  .layout-reconstruction .recon-col { display: flex; flex-direction: column; gap: 8px; }
+  .layout-reconstruction .recon-col:last-child { gap: 16px; }
+  .layout-reconstruction .d-img-wrap { background: none; }
+  .layout-reconstruction .d-img-wrap img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 0.35s; }
+  .layout-reconstruction .d-img-wrap img.loaded { opacity: 1; }
+  .layout-reconstruction .recon-label {
+    font-size: 10px; color: var(--muted); letter-spacing: 0.07em;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+
+  /* iframe 레이아웃 — IAM 애니메이션 등 HTML embed */
+  .layout-iframe { display: flex; flex-direction: column; gap: 32px; }
+  .iframe-cell { width: 100%; }
+  .iframe-label { font-size: 10px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 10px; }
+  .iframe-cell iframe { width: 100%; height: 480px; border: none; display: block; }
+  @media (max-width: 800px) {
+    .iframe-cell iframe { height: 56vw; min-height: 220px; }
+  }
+
+  /* ── CERAMIC ── */
+  #ceramic {
+    flex-direction: column; align-items: flex-start;
+    justify-content: space-between; padding: 40px 24px 24px;
+  }
+  #ceramic .ceramic-label { font-size: 10px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 12px; }
+  #ceramic .ceramic-title {
+    font-size: clamp(48px, 9vw, 140px); font-weight: 400;
+    letter-spacing: -0.035em; line-height: 0.92; margin-top: auto; margin-bottom: 6vh;
+  }
+  #ceramic .ceramic-title .l2 { display: block; }
+  #ceramic .ceramic-footer { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; padding-top: 20px; }
+  #ceramic .ceramic-footer .label { font-size: 10px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 8px; }
+  #ceramic .ceramic-footer .val { font-size: 12px; }
+
+  /* ── INFO ── */
+  #info { flex-direction: column; overflow: hidden; }
+  .info-tabs { display: flex; gap: 28px; padding: 14px 24px 12px; border-bottom: 0.5px solid #000; flex-shrink: 0; }
+  .info-tabs a { font-size: 11px; color: var(--muted); letter-spacing: 0.02em; }
+  .info-tabs a.active { color: var(--fg); font-weight: 500; }
+  .info-tabs a:hover { color: var(--fg); }
+  .info-body { flex: 1; overflow-y: auto; padding: 36px 24px 64px; scrollbar-width: none; }
+  .info-body::-webkit-scrollbar { display: none; }
+  .info-body .panel { display: none; }
+  .info-body .panel.active { display: block; }
+  .info-grid { display: grid; grid-template-columns: 140px 1fr; gap: 24px 48px; max-width: 680px; }
+  .info-grid .ig-label { font-size: 10px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; padding-top: 2px; }
+  .info-grid .ig-val { font-size: 12px; }
+  .info-grid .ig-val p + p { margin-top: 0.85em; }
+  .info-grid a { border-bottom: 0.5px solid var(--dim); padding-bottom: 1px; }
+  .info-grid a:hover { border-bottom-color: var(--fg); }
+  .sel-list { max-width: 680px; }
+  .sel-row { display: grid; grid-template-columns: 52px 1fr 100px; gap: 20px; padding: 9px 0; }
+  .sel-row.hd { font-size: 10px; color: var(--muted); letter-spacing: 0.07em; text-transform: uppercase; padding-bottom: 10px; border-bottom: 0.5px solid #000; margin-bottom: 2px; }
+  .sel-row .yr { font-size: 11px; color: var(--muted); }
+  .sel-row .tt { font-size: 12px; }
+  .sel-row .tp { font-size: 11px; color: var(--muted); text-align: right; }
+
+  /* ── 모바일 Works 탭 토글 ── */
+  .works-mobile-tabs {
+    display: none;
+  }
+
+  @media (max-width: 800px) {
+    html, body { height: 100%; overflow: hidden; }
+    main.page { height: calc(100vh - 45px); overflow: hidden; }
+
+    /* 홈 스크롤: JS로 body.home-active 클래스로 제어 */
+    body.home-active { overflow-y: auto !important; -webkit-overflow-scrolling: touch; }
+    body.home-active #home {
+      height: auto !important;
+      min-height: calc(100vh - 45px) !important;
+      overflow: visible !important;
+    }
+
+    /* Misc: 스크롤 허용 */
+    #misc { overflow-y: auto !important; -webkit-overflow-scrolling: touch; }
+
+    /* Ceramic: 스크롤 허용 */
+    #ceramic.active { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+    /* Works 모바일 탭 */
+    #works { flex-direction: column; }
+    .works-mobile-tabs {
+      display: flex; flex-shrink: 0;
+      border-bottom: 0.5px solid #000;
+    }
+    .works-mobile-tabs button {
+      flex: 1; background: none; border: none; outline: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.02em;
+      color: var(--muted); padding: 11px 0; cursor: none;
+      border-bottom: 1.5px solid transparent; margin-bottom: -0.5px;
+      transition: color 0.1s;
+    }
+    .works-mobile-tabs button.active { color: var(--fg); border-bottom-color: var(--fg); }
+
+    .works-split {
+      grid-template-columns: 1fr;
+      flex: 1; min-height: 0;
+    }
+
+    /* 리스트 패널 */
+    .works-list {
+      border-right: none;
+      height: 100%;
+      overflow-y: auto;
+      display: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .works-list.mob-active { display: flex; flex-direction: column; }
+
+    /* 아카이브/상세뷰 패널 */
+    .works-right {
+      height: 100%;
+      overflow-y: auto;
+      display: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .works-right.mob-active { display: block; }
+
+    /* 상세뷰 레이아웃 조정 */
+    .layout-confessions { grid-template-columns: repeat(4, 1fr); }
+    .layout-confessions-wide { grid-template-columns: repeat(2, 1fr); }
+    .layout-grid2, .layout-hover, .layout-gorillas,
+    .layout-reconstruction, .layout-bds, .layout-nondry,
+    .layout-jumble1 { grid-template-columns: 1fr 1fr; }
+    .layout-reconstruction { gap: 16px; flex-direction: column; }
+    .layout-reconstruction .recon-col { width: 100%; }
+
+    /* Home */
+    #home.active {
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+      display: flex; flex-direction: column;
+    }
+    #home .meta { grid-template-columns: 1fr; gap: 16px; }
+    #home { padding: 24px 20px 80px; }
+    #home .big { font-size: clamp(48px, 18vw, 120px); margin-bottom: 4vh; }
+
+    /* Info */
+    .info-grid { grid-template-columns: 1fr; gap: 6px 0; }
+    .info-grid .ig-label { margin-top: 18px; }
+
+    /* Ceramic */
+    #ceramic .ceramic-footer { grid-template-columns: 1fr; gap: 16px; }
+    #ceramic .ceramic-title { font-size: clamp(40px, 14vw, 100px); }
+
+    /* Nav */
+    nav.topnav { padding: 12px 16px 10px; }
+    nav.topnav .links { gap: 18px; }
+  }
+
+  /* ── MISC ── */
+  #misc { position: relative; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  #misc-field { position: relative; width: 100%; min-height: 100%; }
 </style>
 </head>
 <body>
 
-<div id="progress"></div>
-<div id="counter"></div>
-<button id="pdf-btn" onclick="window.print()">PDF ↓</button>
+<div id="cursor"></div>
+<div id="coords"></div>
+<div id="typewriter-overlay"><div id="typewriter-text"></div></div>
 
-<div id="deck">
-
-<!-- ── 00 COVER ── -->
-<div class="slide active" id="s-cover">
-  <div class="cover-name">KWON<br>KIHUN</div>
-  <div class="cover-sub">Graphic Designer — Seoul, KR</div>
-  <div class="cover-bottom">
-    Selected Works<br>
-    2021–2026
+<!-- NAV -->
+<nav class="topnav">
+  <div class="name"><span class="kk-trigger">Kihun Kwon</span></div>
+  <div class="links">
+    <a data-page="home" class="active">Home</a>
+    <a data-page="works">Works</a>
+    <a data-page="misc">Misc</a>
+    <div class="nav-dropdown" id="side-dropdown">
+      <button class="nav-dropdown-trigger" id="side-trigger">Side</button>
+      <div class="nav-dropdown-menu" id="side-menu">
+        <a data-page="ceramic">Ceramic</a>
+        <a href="sampler.html">Sampler</a>
+      </div>
+    </div>
+    <a data-page="info">Info</a>
   </div>
-</div>
+</nav>
 
-<!-- ── 01 CV ── -->
-<div class="slide" id="s-cv">
-  <div class="cv-left">
-    <div class="cv-name">KWON<br>KIHUN</div>
-    <div class="cv-title">Graphic Designer</div>
-    <div class="cv-bio">Works across editorial, identity,<br>and printed matter.<br><br>Interested in how concept and material<br>together make something worth holding.</div>
-    <div class="cv-contact">
-      <div class="cv-contact-row">
-        <span class="cv-contact-label">Email</span>
-        <span class="cv-contact-val">roma12053@gmail.com</span>
+<!-- HOME -->
+<main class="page active" id="home">
+  <div class="home-img">
+    <img data-src="./images/profile.jpg" alt="Kihun Kwon" class="kk-trigger">
+  </div>
+  <div class="meta">
+    <div><div class="label">Based in</div><div class="val">Seoul, KR</div></div>
+    <div><div class="label">Field</div><div class="val">Graphic Design,<br>Editorial, Identity</div></div>
+    <div><div class="label">Available</div><div class="val">For commissions<br>from June 2026</div></div>
+  </div>
+</main>
+
+<!-- WORKS: JS로 렌더링 -->
+<main class="page" id="works">
+  <div class="works-mobile-tabs" id="works-mobile-tabs">
+    <button class="active" data-panel="list">List</button>
+    <button data-panel="grid">Grid</button>
+  </div>
+  <div class="works-split">
+    <div class="works-list" id="works-list-panel">
+      <div class="col-head">
+        <span>No.</span><span>Title</span><span style="text-align:right">Year</span>
       </div>
-      <div class="cv-contact-row">
-        <span class="cv-contact-label">Web</span>
-        <span class="cv-contact-val"><a href="https://kwonkihun-kiki.github.io/web/" target="_blank">kwonkihun-kiki.github.io/web</a></span>
-      </div>
-      <div class="cv-contact-row">
-        <span class="cv-contact-label">Instagram</span>
-        <span class="cv-contact-val"><a href="https://instagram.com/kwonkihun" target="_blank">@kwonkihun</a></span>
-      </div>
-      <div class="cv-contact-row">
-        <span class="cv-contact-label">Born</span>
-        <span class="cv-contact-val">1999, Seoul KR</span>
+      <ol class="project-list" id="project-list"></ol>
+    </div>
+    <div class="works-right" id="works-right">
+      <div id="archive-view"></div>
+      <div id="detail-view">
+        <a class="detail-back" id="detail-back">← Back</a>
+        <div class="detail-title" id="d-title">—</div>
+        <div class="detail-sub" id="d-sub">—</div>
+        <div class="detail-meta">
+          <div class="dm-l">Year</div><div class="dm-v" id="d-year">—</div>
+          <div class="dm-l">Type</div><div class="dm-v" id="d-type">—</div>
+        </div>
+        <div id="detail-images"></div>
       </div>
     </div>
   </div>
-  <div class="cv-right">
-    <div class="cv-section">
-      <div class="cv-section-title">Experience</div>
-      <div class="cv-item">
-        <div class="cv-item-date">2026–</div>
-        <div class="cv-item-name">BDS Archive</div>
-        <div class="cv-item-desc">Director</div>
-      </div>
-      <div class="cv-item">
-        <div class="cv-item-date">2025–</div>
-        <div class="cv-item-name">IAMCOMPANY</div>
-        <div class="cv-item-desc">Contents planning, graphic design, branding, Instagram management</div>
-      </div>
-      <div class="cv-item">
-        <div class="cv-item-date">2023</div>
-        <div class="cv-item-name">415-1 · @chulryucksil</div>
-        <div class="cv-item-desc">Print shop management</div>
-      </div>
-      <div class="cv-item">
-        <div class="cv-item-date">2023</div>
-        <div class="cv-item-name">17th Kookmin Design Exhibition</div>
-        <div class="cv-item-desc">2023–2082 Calendar — concept development</div>
-      </div>
-      <div class="cv-item">
-        <div class="cv-item-date">2022</div>
-        <div class="cv-item-name">Polyteru</div>
-        <div class="cv-item-desc">Freelance — T-shirt graphic design</div>
-      </div>
-      <div class="cv-item">
-        <div class="cv-item-date">2022</div>
-        <div class="cv-item-name">Lill Cherry &amp; GOLDBUUDA</div>
-        <div class="cv-item-desc">하늘천따지 1000 words — music video, PD assistant</div>
-      </div>
-      <div class="cv-item">
-        <div class="cv-item-date">2022</div>
-        <div class="cv-item-name">NTND</div>
-        <div class="cv-item-desc">Exhibition poster design</div>
-      </div>
-      <div class="cv-item">
-        <div class="cv-item-date">2022</div>
-        <div class="cv-item-name">Nondry / Hoonies</div>
-        <div class="cv-item-desc">Visual identity, packaging, print</div>
+</main>
+
+<!-- CERAMIC -->
+<main class="page" id="ceramic">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <div id="ck-wrap" style="font-family:'JetBrains Mono',monospace;color:#111;min-height:100%;display:flex;flex-direction:column;align-items:center;padding:48px 20px 64px;box-sizing:border-box;background:#fff;">
+    <div style="display:flex;flex-direction:column;align-items:center;width:100%;max-width:320px;">
+      <canvas id="ck-canvas" style="display:block;touch-action:none;cursor:crosshair;"></canvas>
+      <div style="display:flex;align-items:center;gap:10px;width:100%;max-width:280px;margin-top:12px;">
+        <span style="font-size:8px;letter-spacing:0.35em;color:#999;text-transform:uppercase;flex-shrink:0;width:44px;">Speed</span>
+        <div style="flex:1;height:1px;background:#ddd;"><div id="ck-sf" style="height:100%;background:#111;width:0%;transition:width 0.08s;"></div></div>
+        <span id="ck-sn" style="font-size:8px;letter-spacing:0.1em;color:#111;width:30px;text-align:right;flex-shrink:0;">0</span>
       </div>
     </div>
-    <div class="cv-section">
-      <div class="cv-section-title">Education</div>
-      <div class="cv-item">
-        <div class="cv-item-date">2018–2025</div>
-        <div class="cv-item-name">Bachelor of Visual Communication Design</div>
-        <div class="cv-item-desc">Kookmin University, Seoul</div>
+
+    <div style="margin-top:36px;width:100%;max-width:280px;">
+      <div style="display:flex;align-items:flex-start;padding:14px 0;border-top:1px solid #ddd;border-bottom:1px solid #ddd;">
+        <span style="font-size:9px;letter-spacing:0.35em;color:#999;text-transform:uppercase;width:52px;flex-shrink:0;padding-top:4px;">Clay</span>
+        <div id="ck-clay" style="display:flex;flex-wrap:wrap;gap:6px;flex:1;">
+          <button class="ck-pill" data-body="#bfad98" data-hi="rgba(255,248,238,0.38)" data-name="Stoneware" data-rim="#afa090" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 10px;border:1px solid #111;background:#111;color:#fff;cursor:none;white-space:nowrap;">Stoneware</button>
+          <button class="ck-pill" data-body="#ddd8cf" data-hi="rgba(255,255,255,0.42)" data-name="Porcelain" data-rim="#ccc6bd" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 10px;border:1px solid #ddd;background:transparent;color:#999;cursor:none;white-space:nowrap;">Porcelain</button>
+          <button class="ck-pill" data-body="#b87060" data-hi="rgba(255,240,230,0.35)" data-name="Red Clay" data-rim="#a05848" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 10px;border:1px solid #ddd;background:transparent;color:#999;cursor:none;white-space:nowrap;">Red Clay</button>
+          <button class="ck-pill" data-body="#3a3530" data-hi="rgba(255,255,255,0.15)" data-name="Black" data-rim="#2a2520" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 10px;border:1px solid #ddd;background:transparent;color:#999;cursor:none;white-space:nowrap;">Black</button>
+        </div>
       </div>
-      <div class="cv-item">
-        <div class="cv-item-date">2022–2023</div>
-        <div class="cv-item-name">Strate École de Design Lyon</div>
-        <div class="cv-item-desc">1 semester exchange</div>
+      <div style="display:flex;align-items:flex-start;padding:14px 0;border-bottom:1px solid #ddd;">
+        <span style="font-size:9px;letter-spacing:0.35em;color:#999;text-transform:uppercase;width:52px;flex-shrink:0;padding-top:4px;">Glaze</span>
+        <div id="ck-glaze" style="display:flex;flex-wrap:wrap;gap:6px;flex:1;">
+          <button class="ck-pill" data-name="None" data-overlay="rgba(0,0,0,0)" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 10px;border:1px solid #111;background:#111;color:#fff;cursor:none;white-space:nowrap;">None</button>
+          <button class="ck-pill" data-name="Celadon" data-overlay="rgba(140,185,165,0.38)" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 10px;border:1px solid #ddd;background:transparent;color:#999;cursor:none;white-space:nowrap;">Celadon</button>
+          <button class="ck-pill" data-name="Ash" data-overlay="rgba(200,195,175,0.35)" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 10px;border:1px solid #ddd;background:transparent;color:#999;cursor:none;white-space:nowrap;">Ash</button>
+          <button class="ck-pill" data-name="Tenmoku" data-overlay="rgba(40,25,15,0.45)" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 10px;border:1px solid #ddd;background:transparent;color:#999;cursor:none;white-space:nowrap;">Tenmoku</button>
+          <button class="ck-pill" data-name="Cobalt" data-overlay="rgba(60,90,160,0.32)" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;padding:4px 10px;border:1px solid #ddd;background:transparent;color:#999;cursor:none;white-space:nowrap;">Cobalt</button>
+        </div>
       </div>
-      <div class="cv-section-title" style="margin-top:24px">Skills</div>
-      <div class="cv-item">
-        <div class="cv-item-date">Software</div>
-        <div class="cv-item-name" style="font-size:8.5px;color:var(--gray)">Photoshop · InDesign · Illustrator · After Effects · Blender · Midjourney · Claude</div>
+    </div>
+
+    <div style="margin-top:36px;width:100%;max-width:280px;">
+      <div style="font-size:9px;letter-spacing:0.02em;line-height:1.9;color:#999;margin-bottom:22px;text-align:left;">
+        Enter your name and email address.<br>
+        Firing takes approximately five seconds.<br>
+        A record of this piece will be sent to your inbox when it is complete.
       </div>
-      <div class="cv-item">
-        <div class="cv-item-date">Languages</div>
-        <div class="cv-item-name" style="font-size:8.5px;color:var(--gray)">Korean (native) · English · Français</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+        <span style="font-size:8px;letter-spacing:0.35em;color:#999;text-transform:uppercase;">Name</span>
+        <input autocomplete="off" id="ck-name" placeholder="—" style="background:transparent;border:none;border-bottom:1px solid #ddd;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#111;padding:6px 0;outline:none;width:100%;" type="text">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px;">
+        <span style="font-size:8px;letter-spacing:0.35em;color:#999;text-transform:uppercase;">Email</span>
+        <input autocomplete="off" id="ck-email" placeholder="—" style="background:transparent;border:none;border-bottom:1px solid #ddd;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;color:#111;padding:6px 0;outline:none;width:100%;" type="email">
+      </div>
+      <button id="ck-fire" style="margin-top:20px;width:100%;background:transparent;border:1px solid #111;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.35em;text-transform:uppercase;color:#111;padding:12px 0;cursor:none;">Fire</button>
+    </div>
+
+    <div id="ck-prog" style="display:none;margin-top:20px;width:100%;max-width:280px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+        <span id="ck-ps" style="font-size:9px;letter-spacing:0.2em;color:#999;text-transform:uppercase;">Firing in progress</span>
+        <span id="ck-pp" style="font-size:9px;letter-spacing:0.1em;color:#111;">0%</span>
+      </div>
+      <div style="width:100%;height:1px;background:#ddd;">
+        <div id="ck-pf" style="height:100%;background:#111;width:0%;transition:width 0.25s linear;"></div>
+      </div>
+    </div>
+
+    <div id="ck-msg" style="margin-top:14px;font-size:9px;letter-spacing:0.2em;color:#999;text-align:center;min-height:14px;max-width:280px;font-family:'JetBrains Mono',monospace;"></div>
+    <button id="ck-reset" style="margin-top:20px;background:transparent;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:#999;cursor:none;padding:4px 0;text-decoration:underline;text-underline-offset:3px;">Reset clay</button>
+  </div>
+
+  <script>
+  (function(){
+    if(window.__CERAMIC_APP_INIT__)return;
+    window.__CERAMIC_APP_INIT__=true;
+
+    const PK='_e_Wp5U_lueZnFp8W';
+    const SVC='service_xrrzasj';
+    const TPL='template_k2qe76j';
+
+    const canvas=document.getElementById('ck-canvas');
+    const ctx=canvas.getContext('2d');
+    const wrap=document.getElementById('ck-wrap');
+
+    let CW,CH,CX,BY,WRX,WRY;
+
+    function resizeCanvas(){
+      const SIZE=Math.min(280,(wrap.offsetWidth||window.innerWidth)-40);
+      canvas.width=SIZE;canvas.height=Math.round(SIZE*300/280);
+      CW=canvas.width;CH=canvas.height;CX=CW/2;
+      BY=CH-Math.round(CH*32/300);
+      WRX=Math.round(CW*80/280);WRY=Math.round(CW*10/280);
+    }
+
+    let clay={body:'#bfad98',rim:'#afa090',hi:'rgba(255,248,238,0.38)',name:'Stoneware'};
+    let glaze={overlay:'rgba(0,0,0,0)',name:'None'};
+    let pot={pts:[],h:0,speed:0,angle:0};
+    let drag={on:false};
+    let lastT=0,fired=false,isSending=false,shapeStart=Date.now();
+
+    function init(){
+      pot.pts=[];pot.h=CW*100/280;pot.speed=0;pot.angle=0;
+      fired=false;isSending=false;shapeStart=Date.now();
+      for(let i=0;i<=10;i++){
+        const t=i/10;
+        pot.pts.push({r:(16+11*Math.sin(t*Math.PI*0.9+0.15))*CW/280,y:t});
+      }
+    }
+
+    function frame(ts){
+      ctx.clearRect(0,0,CW,CH);
+      const dt=Math.min((ts-lastT)/1000,0.05);lastT=ts;
+      pot.speed+=((drag.on&&!fired?5:0)-pot.speed)*0.06;
+      pot.angle+=pot.speed*dt;
+      document.getElementById('ck-sf').style.width=Math.min(pot.speed/8*100,100)+'%';
+      document.getElementById('ck-sn').textContent=Math.round(pot.speed*12);
+
+      ctx.save();
+      ctx.beginPath();ctx.ellipse(CX,BY,WRX,WRY,0,0,Math.PI*2);
+      ctx.fillStyle='#ccc9c3';ctx.fill();
+      ctx.restore();
+
+      const p=pot.pts.map(pt=>({x:pt.r,y:BY-pt.y*pot.h}));
+      if(p.length>1){
+        ctx.save();
+        const top=p[p.length-1];
+        ctx.beginPath();ctx.moveTo(CX,BY);
+        for(let i=0;i<p.length;i++)ctx.lineTo(CX+p[i].x,p[i].y);
+        ctx.lineTo(CX,top.y-2);
+        for(let i=p.length-1;i>=0;i--)ctx.lineTo(CX-p[i].x,p[i].y);
+        ctx.closePath();
+        ctx.fillStyle=clay.body;ctx.fill();
+        if(glaze.overlay!=='rgba(0,0,0,0)'){ctx.fillStyle=glaze.overlay;ctx.fill();}
+        ctx.globalCompositeOperation='source-atop';
+        ctx.fillStyle='rgba(0,0,0,0.08)';
+        ctx.fillRect(CX+top.x*0.3,0,CW,CH);
+        ctx.globalCompositeOperation='source-over';
+        ctx.beginPath();ctx.ellipse(CX,top.y,top.x,top.x*0.2,0,0,Math.PI*2);
+        ctx.fillStyle=clay.rim;ctx.fill();
+        if(glaze.overlay!=='rgba(0,0,0,0)'){ctx.fillStyle=glaze.overlay;ctx.fill();}
+        ctx.beginPath();ctx.ellipse(CX,top.y,top.x*0.7,top.x*0.12,0,0,Math.PI*2);
+        ctx.fillStyle='rgba(0,0,0,0.15)';ctx.fill();
+        ctx.beginPath();
+        for(let i=0;i<p.length;i++){const x=CX-p[i].x*0.6+2;if(i===0)ctx.moveTo(x,p[i].y);else ctx.lineTo(x,p[i].y);}
+        ctx.strokeStyle=clay.hi;ctx.lineWidth=4;ctx.lineCap='round';ctx.stroke();
+        ctx.restore();
+      }
+      requestAnimationFrame(frame);
+    }
+
+    canvas.onmousedown=e=>{if(fired)return;drag.on=true;};
+    canvas.addEventListener('mousemove',e=>{
+      if(!drag.on||fired)return;
+      const r=canvas.getBoundingClientRect();
+      const py=(e.clientY-r.top)*CH/r.height;
+      const dx=e.movementX||0;
+      pot.pts.forEach(pt=>{
+        const d=Math.abs((BY-pt.y*pot.h)-py);
+        const inf=Math.max(0,1-d/(CW*0.2));
+        pt.r=Math.max(5,Math.min(WRX-8,pt.r+dx*inf*0.4));
+      });
+      pot.h=Math.max(30,Math.min(CH*0.8,pot.h-(e.movementY||0)*0.5));
+    });
+    window.addEventListener('mouseup',()=>{drag.on=false;});
+
+    canvas.addEventListener('touchstart',e=>{if(fired)return;drag.on=true;drag.lx=e.touches[0].clientX;drag.ly=e.touches[0].clientY;},{passive:true});
+    canvas.addEventListener('touchmove',e=>{
+      if(!drag.on||fired)return;
+      e.preventDefault();
+      const dx=e.touches[0].clientX-drag.lx;
+      const dy=e.touches[0].clientY-drag.ly;
+      drag.lx=e.touches[0].clientX;drag.ly=e.touches[0].clientY;
+      const r=canvas.getBoundingClientRect();
+      const py=(e.touches[0].clientY-r.top)*CH/r.height;
+      pot.pts.forEach(pt=>{
+        const d=Math.abs((BY-pt.y*pot.h)-py);
+        const inf=Math.max(0,1-d/(CW*0.2));
+        pt.r=Math.max(5,Math.min(WRX-8,pt.r+dx*inf*0.4));
+      });
+      pot.h=Math.max(30,Math.min(CH*0.8,pot.h-dy*0.5));
+    },{passive:false});
+    canvas.addEventListener('touchend',()=>{drag.on=false;},{passive:true});
+
+    document.querySelectorAll('#ck-clay .ck-pill').forEach(b=>{
+      b.onclick=()=>{
+        if(fired)return;
+        document.querySelectorAll('#ck-clay .ck-pill').forEach(p=>{p.style.background='transparent';p.style.color='#999';p.style.borderColor='#ddd';});
+        b.style.background='#111';b.style.color='#fff';b.style.borderColor='#111';
+        clay={body:b.dataset.body,rim:b.dataset.rim,hi:b.dataset.hi,name:b.dataset.name};
+      };
+    });
+    document.querySelectorAll('#ck-glaze .ck-pill').forEach(b=>{
+      b.onclick=()=>{
+        if(fired)return;
+        document.querySelectorAll('#ck-glaze .ck-pill').forEach(p=>{p.style.background='transparent';p.style.color='#999';p.style.borderColor='#ddd';});
+        b.style.background='#111';b.style.color='#fff';b.style.borderColor='#111';
+        glaze={overlay:b.dataset.overlay,name:b.dataset.name};
+      };
+    });
+
+    document.getElementById('ck-fire').onclick=()=>{
+      if(fired||isSending)return;
+      const email=document.getElementById('ck-email').value.trim();
+      if(!email.includes('@')){alert('Please enter a valid email.');return;}
+      fired=true;
+      document.getElementById('ck-prog').style.display='block';
+      const FIRE=5000,t0=Date.now();
+      const iv=setInterval(()=>{
+        const pct=Math.min((Date.now()-t0)/FIRE*100,100);
+        document.getElementById('ck-pf').style.width=pct+'%';
+        document.getElementById('ck-pp').textContent=Math.round(pct)+'%';
+        const rem=Math.ceil((FIRE-(Date.now()-t0))/1000);
+        document.getElementById('ck-ps').textContent=rem>0?rem+'s remaining':'Firing complete';
+        if(pct>=100){clearInterval(iv);if(!isSending){isSending=true;sendEmail(email);}}
+      },500);
+    };
+
+    function smallImage(){
+      const tmp=document.createElement('canvas');
+      tmp.width=150;tmp.height=Math.round(150*CH/CW);
+      const tc=tmp.getContext('2d');
+      tc.fillStyle='#fff';tc.fillRect(0,0,tmp.width,tmp.height);
+      tc.drawImage(canvas,0,0,tmp.width,tmp.height);
+      return tmp.toDataURL('image/jpeg',0.7);
+    }
+
+    function sendEmail(email){
+      const msg=document.getElementById('ck-msg');
+      msg.textContent='Sending…';
+      const sec=Math.round((Date.now()-shapeStart)/1000);
+      const st=sec>=60?Math.floor(sec/60)+'m '+(sec%60)+'s':sec+'s';
+      const fa=new Date().toLocaleString('en-US',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+      window.emailjs.send(SVC,TPL,{
+        to_email:email,
+        user_name:document.getElementById('ck-name').value.trim()||'—',
+        clay_name:clay.name,
+        glaze_name:glaze.name,
+        fired_at:fa,
+        shape_time:st,
+        pot_image:smallImage()
+      },PK).then(()=>{
+        msg.textContent='Sent. Check your inbox.';
+        msg.style.color='#111';
+        document.getElementById('ck-prog').style.display='none';
+      }).catch(err=>{
+        console.error('EmailJS:',err);
+        msg.textContent='Failed to send. Please try again.';
+        fired=false;isSending=false;
+      });
+    }
+
+    document.getElementById('ck-reset').onclick=()=>{
+      init();
+      document.getElementById('ck-msg').textContent='';
+      document.getElementById('ck-msg').style.color='#999';
+      document.getElementById('ck-prog').style.display='none';
+      document.getElementById('ck-pf').style.width='0%';
+    };
+
+    // 외부에서 호출 가능하도록 전역 등록
+    window.__CERAMIC_START__ = function(){
+      resizeCanvas();
+      init();
+      requestAnimationFrame(ts=>{lastT=ts;requestAnimationFrame(frame);});
+    };
+
+    // ceramic 탭 클릭 시 canvas 루프 시작
+    document.getElementById('ck-canvas').addEventListener('ck-start', function(){
+      init();
+      requestAnimationFrame(ts=>{lastT=ts;requestAnimationFrame(frame);});
+    });
+
+    // 페이지 로드 시 ceramic이 active면 바로 시작
+    if(document.getElementById('ceramic').classList.contains('active')){
+      window.__CERAMIC_CANVAS_READY__=true;
+      init();
+      requestAnimationFrame(ts=>{lastT=ts;requestAnimationFrame(frame);});
+    }
+  })();
+  </script>
+</main>
+
+<!-- MISC -->
+<main class="page" id="misc">
+  <div id="misc-field">
+  <iframe src="sampler.html" style="width:100%;height:700px;border:none;background:#000;" allow="microphone; autoplay"></iframe>
+</div>
+</main>
+
+<!-- INFO -->
+<main class="page" id="info">
+  <div class="info-body">
+    <div class="panel active" id="panel-information">
+      <div class="info-grid">
+        <div class="ig-label">Bio</div>
+        <div class="ig-val">
+          <p>Kihun Kwon is a graphic designer based in Seoul. His practice spans editorial, identity, and printed matter, with an interest in how typography, image, and material together hold a story.</p>
+          <p>He works across self-initiated and commissioned projects, often collaborating with artists, small studios, and independent publishers.</p>
+        </div>
+        <div class="ig-label">Education</div>
+        <div class="ig-val">
+          <p>2018–2025<br>Bachelor of Visual Communication Design<br>Kookmin University, Seoul</p>
+          <p>2022–2023<br>Strate École de Design Lyon<br>(1 semester exchange)</p>
+        </div>
+        <div class="ig-label">Practice</div>
+        <div class="ig-val">
+          <p>Editorial Design<br>Visual Identity<br>Print &amp; Poster<br>Type &amp; Image</p>
+        </div>
+        <div class="ig-label">Experience</div>
+        <div class="ig-val">
+          <p>IAMCOMPANY — Contents Team<br>contents planning, graphic design, branding, Instagram management</p>
+          <p>Print Shop Manager — 415-1 (@chulryucksil)</p>
+          <p>Polyteru — Freelance Designer for T-shirt Graphics</p>
+          <p>17th Kookmin University Design Exhibition<br>2023–2082 Calendar, Project Concept Development</p>
+          <p>Music Video — Lill Cherry &amp; GOLDBUUDA, PD Assistant</p>
+          <p>Exhibition — NTND, Posters</p>
+        </div>
+        <div class="ig-label">Contact</div>
+        <div class="ig-val">
+          <p>
+            <a href="mailto:roma12053@gmail.com">roma12053@gmail.com</a><br>
+            <a href="https://instagram.com/kwonkihun" target="_blank">@kwonkihun</a>
+          </p>
+        </div>
+        <div class="ig-label">CV</div>
+        <div class="ig-val"><p><a href="./cv/kwonkihun_cv.pdf" target="_blank">Download PDF</a></p></div>
       </div>
     </div>
   </div>
-</div>
-
-<!-- ── 02 INDEX ── -->
-<div class="slide" id="s-index">
-  <div class="index-left">
-    <span class="index-title-big">Index</span>
-  </div>
-  <div class="index-right">
-    <ul class="index-list" id="index-list"></ul>
-  </div>
-</div>
-
-<!-- ── 03 CONFESSIONS TITLE ── -->
-<div class="slide slide-proj-title" id="s-conf-title">
-  <div class="proj-meta">
-    <div class="proj-num">01</div>
-    <div class="proj-title-big">CONFESSIONS:<br>12 SINNERS</div>
-    <div class="proj-year-type">2024 · Editorial</div>
-    <div class="proj-desc">고해성사를 주제로, 12명의 참여자에게 실제 혹은 가상의 죄목을 고백받아 그래픽 작업으로 풀어냈다. 각 고백을 바탕으로 드로잉과 타이포그래피를 결합한 초상 이미지를 제작했다.</div>
-  </div>
-  <div class="proj-thumb">
-    <img src="https://kwonkihun-kiki.github.io/web/images/works/p02_confessions/thumb.jpg" alt="Confessions thumbnail">
-  </div>
-</div>
-
-<!-- ── 04 CONFESSIONS FRONT (12 artworks) ── -->
-<div class="slide slide-images" id="s-conf-front">
-  <div class="slide-images-header">
-    <span style="font-size:9px;letter-spacing:0.12em;color:var(--gray)">01 — CONFESSIONS: 12 SINNERS</span>
-    <span style="font-size:8px;color:var(--lgray)">Front</span>
-  </div>
-  <div class="img-grid-area">
-    <div class="grid-4col" id="conf-front-grid"></div>
-  </div>
-</div>
-
-<!-- ── 05 CONFESSIONS BACK (12 portraits) ── -->
-<div class="slide slide-images" id="s-conf-back">
-  <div class="slide-images-header">
-    <span style="font-size:9px;letter-spacing:0.12em;color:var(--gray)">01 — CONFESSIONS: 12 SINNERS</span>
-    <span style="font-size:8px;color:var(--lgray)">Back</span>
-  </div>
-  <div class="img-grid-area">
-    <div class="grid-4col" id="conf-back-grid"></div>
-  </div>
-</div>
-
-<!-- ── 05B CONFESSIONS EXTRA (13–24) ── -->
-<div class="slide slide-images" id="s-conf-extra">
-  <div class="slide-images-header">
-    <span style="font-size:9px;letter-spacing:0.12em;color:var(--gray)">01 — CONFESSIONS: 12 SINNERS</span>
-    <span style="font-size:8px;color:var(--lgray)">03</span>
-  </div>
-  <div class="img-grid-area">
-    <div class="grid-4col" id="conf-extra-grid"></div>
-  </div>
-</div>
-
-<!-- ── 06 BDS TITLE ── -->
-<div class="slide slide-proj-title" id="s-bds-title">
-  <div class="proj-meta">
-    <div class="proj-num">02</div>
-    <div class="proj-title-big">BDS<br>ARCHIVE</div>
-    <div class="proj-year-type">2024 · Identity</div>
-    <div class="proj-desc">패션 레이블 Birthdaysuit의 아카이브 프로젝트. 로고 리디자인을 시작으로, 직접 레퍼런스를 수집하며 브랜드 전반의 시각 언어를 재구성했다.</div>
-  </div>
-  <div class="proj-thumb">
-    <img src="https://kwonkihun-kiki.github.io/web/images/works/p15_BDS/thumb.jpg" alt="BDS thumbnail">
-  </div>
-</div>
-
-<!-- ── 07 BDS IMAGES ── -->
-<div class="slide slide-images" id="s-bds-imgs">
-  <div class="slide-images-header">
-    <span style="font-size:9px;letter-spacing:0.12em;color:var(--gray)">02 — BDS ARCHIVE</span>
-  </div>
-  <div class="img-grid-area">
-    <div class="grid-3col" id="bds-grid"></div>
-  </div>
-</div>
-
-<!-- ── 08 415-1 TITLE ── -->
-<div class="slide slide-proj-title" id="s-415-title">
-  <div class="proj-meta">
-    <div class="proj-num">03</div>
-    <div class="proj-title-big">415-1</div>
-    <div class="proj-year-type">2023 · Object</div>
-    <div class="proj-desc">대학 출력실의 3D 프린터가 점차 잊혀져가던 시기, 관리자였던 작업자가 그 프린터로 직접 출력실 간판을 제작해 교체했다. 도구가 스스로의 존재를 증명하는 방식으로.</div>
-  </div>
-  <div class="proj-thumb">
-    <img src="https://kwonkihun-kiki.github.io/web/images/works/p06_415-1/thumb.jpg" alt="415-1 thumbnail">
-  </div>
-</div>
-
-<!-- ── 09 415-1 IMAGES ── -->
-<div class="slide slide-images" id="s-415-imgs">
-  <div class="slide-images-header">
-    <span style="font-size:9px;letter-spacing:0.12em;color:var(--gray)">03 — 415-1</span>
-  </div>
-  <div class="img-grid-area">
-    <div class="grid-2col" id="p415-grid"></div>
-  </div>
-</div>
-
-<!-- ── 10 JUMBLE TITLE ── -->
-<div class="slide slide-proj-title" id="s-jum-title">
-  <div class="proj-meta">
-    <div class="proj-num">04</div>
-    <div class="proj-title-big">JUMBLE<br>SEOUL 2</div>
-    <div class="proj-year-type">2025 · Exhibition</div>
-    <div class="proj-desc">일본 최대 패션 트레이드 쇼 JUMBLE의 서울 2회차 비주얼 디렉션. 성수동 Space S1에서 개최된 B2C 패션 크리에이티브 쇼룸 행사로, 트레이싱지에 인쇄해 접으면 완성되는 맵 형태의 인쇄물을 제작했다.</div>
-  </div>
-  <div class="proj-thumb">
-    <img src="https://kwonkihun-kiki.github.io/web/images/works/p14_jumble_2/thumb.jpg" alt="Jumble Seoul 2 thumbnail">
-  </div>
-</div>
-
-<!-- ── 11 JUMBLE IMAGES A ── -->
-<div class="slide slide-images" id="s-jum-imgs">
-  <div class="slide-images-header">
-    <span style="font-size:9px;letter-spacing:0.12em;color:var(--gray)">04 — JUMBLE SEOUL 2</span>
-    <span style="font-size:8px;color:var(--lgray)">01</span>
-  </div>
-  <div class="img-grid-area">
-    <div class="grid-3col" id="jum2-grid-a"></div>
-  </div>
-</div>
-
-<!-- ── 11B JUMBLE IMAGES B ── -->
-<div class="slide slide-images" id="s-jum-imgs-2">
-  <div class="slide-images-header">
-    <span style="font-size:9px;letter-spacing:0.12em;color:var(--gray)">04 — JUMBLE SEOUL 2</span>
-    <span style="font-size:8px;color:var(--lgray)">02</span>
-  </div>
-  <div class="img-grid-area">
-    <div class="grid-3col" id="jum2-grid-b"></div>
-  </div>
-</div>
-
-<!-- ── 12 MECHANICAL FRUITS TITLE ── -->
-<div class="slide slide-proj-title" id="s-mf-title">
-  <div class="proj-meta">
-    <div class="proj-num">05</div>
-    <div class="proj-title-big">MECHANICAL<br>FRUITS</div>
-    <div class="proj-year-type">2022 · Graphic</div>
-    <div class="proj-desc">차량의 종류와 구조로부터 과일의 형태를 재상상한 개인 작업. 소방차는 사과가 되고, 크레인은 바나나를 닮는다.</div>
-  </div>
-  <div class="proj-thumb">
-    <img src="https://kwonkihun-kiki.github.io/web/images/works/p04_mechanical_fruits/thumb.jpg" alt="Mechanical Fruits thumbnail">
-  </div>
-</div>
-
-<!-- ── 13 MECHANICAL FRUITS IMAGES ── -->
-<div class="slide slide-images" id="s-mf-imgs">
-  <div class="slide-images-header">
-    <span style="font-size:9px;letter-spacing:0.12em;color:var(--gray)">05 — MECHANICAL FRUITS</span>
-  </div>
-  <div class="img-grid-area">
-    <div class="grid-3col" id="mf-grid"></div>
-  </div>
-</div>
-
-<!-- ── 14 APES TITLE ── -->
-<div class="slide slide-proj-title" id="s-apes-title">
-  <div class="proj-meta">
-    <div class="proj-num">06</div>
-    <div class="proj-title-big">APES</div>
-    <div class="proj-year-type">2024 · Graphic</div>
-    <div class="proj-desc">개인 그래픽 작업.</div>
-  </div>
-  <div class="proj-thumb">
-    <img src="https://kwonkihun-kiki.github.io/web/images/works/p17_apes/thumb.jpg" alt="Apes thumbnail">
-  </div>
-</div>
-
-<!-- ── 15 APES IMAGES ── -->
-<div class="slide slide-images" id="s-apes-imgs">
-  <div class="slide-images-header">
-    <span style="font-size:9px;letter-spacing:0.12em;color:var(--gray)">06 — APES</span>
-  </div>
-  <div class="img-grid-area">
-    <div class="grid-3col" id="apes-grid"></div>
-  </div>
-</div>
-
-<!-- ── 16 BACK COVER ── -->
-<div class="slide" id="s-back">
-  <div class="back-content">
-    <div class="back-thanks">KWON KIHUN<br>Graphic Designer</div>
-    <div class="back-url" style="margin-top:32px;font-size:10px;color:var(--gray);letter-spacing:0.02em;line-height:1.7">
-      <span style="color:var(--red);font-size:8px;letter-spacing:0.01em">더 많은 작업은 웹사이트에서 확인할 수 있습니다</span><br>
-      <a href="https://kwonkihun-kiki.github.io/web/" target="_blank" style="font-size:11px;color:#000">kwonkihun-kiki.github.io/web</a>
-    </div>
-    <div class="back-url" style="margin-top:16px">
-      <a href="https://instagram.com/kwonkihun" target="_blank">@kwonkihun</a>
-    </div>
-    <div class="back-url" style="margin-top:8px">
-      <a href="mailto:roma12053@gmail.com">roma12053@gmail.com</a>
-    </div>
-  </div>
-  <div class="back-right">
-    Seoul, KR<br>
-    2026
-  </div>
-</div>
-
-</div><!-- #deck -->
+</main>
 
 <script>
-const BASE = 'https://kwonkihun-kiki.github.io/web/images/works/';
-
-// ── Populate image grids ──
-function imgs(folder, files) {
-  return files.map(f => `${BASE}${folder}/${f}`);
-}
-
-function buildGrid(containerId, srcs, fit) {
-  const el = document.getElementById(containerId);
-  srcs.forEach(src => {
-    const img = document.createElement('img');
-    img.className = fit === 'cover' ? 'grid-img grid-img-cover' : 'grid-img';
-    img.src = src;
-    img.loading = 'lazy';
-    img.onerror = () => { img.style.display = 'none'; };
-    el.appendChild(img);
-  });
-}
-
-// Also load confession front as .png fallback (some files may differ)
-function buildGridMultiExt(containerId, folder, basenames) {
-  const el = document.getElementById(containerId);
-  basenames.forEach(base => {
-    const img = document.createElement('img');
-    img.className = 'grid-img';
-    img.loading = 'lazy';
-    img.src = `${BASE}${folder}/${base}.jpg`;
-    img.onerror = () => {
-      img.src = `${BASE}${folder}/${base}.png`;
-      img.onerror = () => { img.style.display = 'none'; };
-    };
-    el.appendChild(img);
-  });
-}
-
-// Confessions front: 01-12 (jpg/png fallback)
-buildGridMultiExt('conf-front-grid', 'p02_confessions',
-  ['01','02','03','04','05','06','07','08','09','10','11','12']);
-
-// Confessions back — 01h–12h portraits
-buildGrid('conf-back-grid', imgs('p02_confessions',
-  ['01h.jpg','02h.jpg','03h.jpg','04h.jpg','05h.jpg','06h.jpg',
-   '07h.jpg','08h.jpg','09h.jpg','10h.jpg','11h.jpg','12h.jpg']));
-
-// Confessions extra — 13–24
-buildGrid('conf-extra-grid', imgs('p02_confessions',
-  ['13.jpg','14.jpg','15.jpg','16.jpg','17.jpg','18.jpg',
-   '19.jpg','20.jpg','21.jpg','22.jpg','23.jpg','24.jpg']));
-
-// BDS: 01–11 + 13 (no 12.jpg exists)
-buildGrid('bds-grid', imgs('p15_BDS',
-  ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg',
-   '07.jpg','08.jpg','09.jpg','10.jpg','11.jpg','13.jpg']));
-
-// 415-1 — cover fill for photo shots
-buildGrid('p415-grid', imgs('p06_415-1', ['01.jpg','02.jpg','03.jpg','04.jpg']), 'cover');
-
-// Jumble Seoul 2 — Part A: 01–03 (floor plans)
-buildGrid('jum2-grid-a', imgs('p14_jumble_2',
-  ['01.jpg','02.jpg','03.jpg']));
-
-// Jumble Seoul 2 — Part B: 04–09 (detailed maps)
-buildGrid('jum2-grid-b', imgs('p14_jumble_2',
-  ['04.jpg','05.jpg','06.jpg','07.jpg','08.jpg','09.jpg']));
-
-// Mechanical Fruits — 9 images (fruit + mechanical + vehicle × 3)
-buildGrid('mf-grid', imgs('p04_mechanical_fruits',
-  ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg',
-   '07.jpg','08.jpg','09.jpg']));
-
-// Apes
-buildGrid('apes-grid', imgs('p17_apes',
-  ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg']));
-
-// ── Index ──
+// ═══════════════════════════════════════════════════
+// PROJECTS 배열 — 여기만 수정하면 됨
+// layout: 'default' | 'grid2' | 'confessions' | 'hover' | 'gorillas' | 'reconstruction' | 'bds' | 'iframe'
+// images: 상세뷰에 표시할 파일명 배열 (thumb 제외)
+// hover: 호버 스왑 쌍 [ [base, hover], ... ] (confessions/hover/bds용)
+// ═══════════════════════════════════════════════════
 const PROJECTS = [
-  { num: '01', title: 'CONFESSIONS: 12 SINNERS', year: '2024', type: 'Editorial', slideId: 's-conf-title' },
-  { num: '02', title: 'BDS ARCHIVE',             year: '2024', type: 'Identity',  slideId: 's-bds-title' },
-  { num: '03', title: '415-1',                   year: '2023', type: 'Identity',  slideId: 's-415-title' },
-  { num: '04', title: 'JUMBLE SEOUL 2',          year: '2023', type: 'Exhibition',slideId: 's-jum-title' },
-  { num: '05', title: 'MECHANICAL FRUITS',       year: '2022', type: 'Object',    slideId: 's-mf-title' },
-  { num: '06', title: 'APES',                    year: '2022', type: 'Graphic',   slideId: 's-apes-title' },
+  {
+    id: 'p15',
+    folder: 'p15_BDS',
+    title: 'BDS Archive',
+    year: '2026',
+    type: 'Identity',
+    layout: 'bds_custom',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg',
+             '08.jpg','09.jpg','10.jpg','11.jpg','13.jpg','14.jpg']
+  },
+  {
+    id: 'p13',
+    folder: 'p13_jumble_1',
+    title: 'Jumble Seoul 1',
+    year: '2026',
+    type: 'Identity',
+    layout: 'jumble1',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg']
+  },
+  {
+    id: 'p14',
+    folder: 'p14_jumble_2',
+    title: 'Jumble Seoul 2',
+    year: '2026',
+    type: 'Identity',
+    layout: 'jumble2',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg','08.jpg','09.jpg']
+  },
+  {
+    id: 'p17',
+    folder: 'p17_apes',
+    title: 'apes',
+    year: '2025',
+    type: 'Editorial',
+    layout: 'grid2',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg']
+  },
+  {
+    id: 'p01',
+    folder: 'p01_meatball',
+    title: 'meatball',
+    year: '2024',
+    type: 'Poster',
+    layout: 'grid2',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg']
+  },
+  {
+    id: 'p02',
+    folder: 'p02_confessions',
+    title: 'confessions: 12 sinners',
+    year: '2024',
+    type: 'Editorial',
+    layout: 'confessions',
+    hover:  [['01.jpg','01h.jpg'],['02.jpg','02h.jpg'],['03.jpg','03h.jpg'],
+             ['04.jpg','04h.jpg'],['05.jpg','05h.jpg'],['06.jpg','06h.jpg'],
+             ['07.jpg','07h.jpg'],['08.jpg','08h.jpg'],['09.jpg','09h.jpg'],
+             ['10.jpg','10h.jpg'],['11.jpg','11h.jpg'],['12.jpg','12h.jpg']],
+    images2: ['13.jpg','14.jpg','15.jpg','16.jpg','17.jpg','18.jpg',
+              '19.jpg','20.jpg','21.jpg','22.jpg','23.jpg','24.jpg']
+  },
+  {
+    id: 'p04',
+    folder: 'p04_mechanical_fruits',
+    title: 'mechanical fruits',
+    year: '2023',
+    type: 'Print',
+    layout: 'grid2',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg']
+  },
+  {
+    id: 'p05',
+    folder: 'p05_Imademyfriendsintogorillas',
+    title: 'I made my friends into gorillas',
+    year: '2023',
+    type: 'Book',
+    layout: 'gorillas',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg',
+             '07.jpg','08.jpg','09.jpg','10.jpg','11.jpg','12.jpg',
+             '13.jpg','14.jpg','15.jpg','16.jpg','17.jpg','18.jpg']
+  },
+  {
+    id: 'p06',
+    folder: 'p06_415-1',
+    title: '415-1',
+    year: '2023',
+    type: 'Identity',
+    layout: 'grid2',
+    images: ['01.jpg','02.jpg','03.png','04.jpg']
+  },
+  {
+    id: 'p18',
+    folder: 'p18_07.09.2079',
+    title: '07.09.2079',
+    year: '2023',
+    type: 'Identity',
+    layout: 'default',
+    images: ['01.jpg']
+  },
+  {
+    id: 'p16',
+    folder: 'p16_postcard',
+    title: 'Postcard',
+    year: '2023',
+    type: 'Print',
+    layout: 'grid2',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg']
+  },
+  {
+    id: 'p21',
+    folder: 'p21_nonstoptyping',
+    title: 'nonstoptyping',
+    year: '2025',
+    type: 'Editorial',
+    layout: 'default',
+    images: ['01.jpg']
+  },
+  {
+    id: 'p20',
+    folder: 'p20_colecole',
+    title: 'colecole',
+    year: '2026',
+    type: 'Editorial',
+    layout: 'grid2',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg']
+  },
+  {
+    id: 'p19',
+    folder: 'p19_recruit',
+    title: 'Recruit',
+    year: '2024',
+    type: 'Print',
+    layout: 'default',
+    images: ['01.jpg']
+  },
+  {
+    id: 'p07',
+    folder: 'p07_hoonies_cookies',
+    title: 'Hoonies cookies',
+    year: '2022',
+    type: 'Identity',
+    layout: 'hoonies',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg',
+             '07.jpg','08.jpg','09.jpg','10.jpg','11.jpg','12.jpg']
+  },
+  {
+    id: 'p08',
+    folder: 'p08_nondry',
+    title: 'Nondry',
+    year: '2022',
+    type: 'Print',
+    layout: 'nondry',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg','08.jpg']
+  },
+  {
+    id: 'p09',
+    folder: 'p09_sky_samples',
+    title: 'sky samples',
+    year: '2022',
+    type: 'Editorial',
+    layout: 'default',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg','08.jpg','09.jpg']
+  },
+  {
+    id: 'p10',
+    folder: 'p10_recounstruction',
+    title: 'reconstruction',
+    year: '2022',
+    type: 'Print',
+    layout: 'reconstruction',
+    images:  ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg','06.jpg','07.jpg','08.jpg','09.jpg','10.jpg'],
+    images2: ['11.jpg','12.jpg','13.jpg','14.jpg','15.jpg','16.jpg','17.jpg','18.jpg','19.jpg','20.jpg']
+  },
+  {
+    id: 'p11',
+    folder: 'p11_alice',
+    title: 'alice',
+    year: '2021',
+    type: 'Book',
+    layout: 'default',
+    images: ['01.jpg','02.jpg','03.jpg','04.jpg','05.jpg']
+  },
+  {
+    id: 'p12',
+    folder: 'p12_happy_tiger',
+    title: 'happy tiger',
+    year: '2021',
+    type: 'Print',
+    layout: 'default',
+    images: ['01.jpg','02.jpg','03.jpg']
+  },
+  {
+    id: 'p22',
+    folder: 'p22_web',
+    title: 'Web 01',
+    year: '2026',
+    type: 'Web',
+    layout: 'iframe',
+    thumb: 'thumb01.jpg',
+    iframes: [{ src: 'particle-white.html', label: '' }]
+  },
+  {
+    id: 'p23',
+    folder: 'p22_web',
+    title: 'Web 02',
+    year: '2026',
+    type: 'Web',
+    layout: 'iframe',
+    thumb: 'thumb02.jpg',
+    iframes: [{ src: 'particle-dark.html', label: '' }]
+  },
+  {
+    id: 'p24',
+    folder: 'p22_web',
+    title: 'Web 03',
+    year: '2026',
+    type: 'Web',
+    layout: 'iframe',
+    thumb: 'thumb03.jpg',
+    iframes: [{ src: 'sale.html', label: '' }]
+  },
 ];
-const indexList = document.getElementById('index-list');
-PROJECTS.forEach(p => {
+
+// 연도 내림차순 자동 정렬
+PROJECTS.sort((a, b) => b.year - a.year);
+
+// 경로 헬퍼
+function imgPath(folder, file) {
+  return './images/works/' + folder + '/' + file;
+}
+function thumbPath(folder, ext) {
+  return './images/works/' + folder + '/thumb.' + (ext || 'jpg');
+}
+
+// ── Lazy Load ──
+// works-right는 overflow scroll 컨테이너라 root로 지정해야 감지됨
+// archive thumb은 DOM 생성 시점에 바로 로드 (페이지 첫 진입 시 보임)
+function loadImg(img) {
+  const src = img.dataset.src;
+  if (!src || img.src === src) return;
+  img.src = src;
+  img.onload  = () => img.classList.add('loaded');
+  img.onerror = () => {};
+}
+
+// 상세뷰용 lazy observer (works-right를 root로)
+let detailObserver = null;
+function getDetailObserver() {
+  if (detailObserver) return detailObserver;
+  const worksRightEl = document.getElementById('works-right');
+  detailObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      loadImg(entry.target);
+      obs.unobserve(entry.target);
+    });
+  }, { root: worksRightEl, rootMargin: '400px', threshold: 0 });
+  return detailObserver;
+}
+
+function lazyImg(src, alt, extraClass) {
+  const img = document.createElement('img');
+  img.dataset.src = src;
+  img.alt = alt || '';
+  if (extraClass) img.classList.add(extraClass);
+  // 상세뷰 이미지는 renderDetail 후 observer에 등록됨
+  return img;
+}
+
+// archive thumb 즉시 로드
+function observeThumb(img) {
+  loadImg(img);
+}
+
+// ── Works 리스트 렌더링 ──
+const projectList = document.getElementById('project-list');
+PROJECTS.forEach((p, i) => {
   const li = document.createElement('li');
-  li.className = 'index-item';
-  li.innerHTML = `<span class="index-num">${p.num}</span><span>${p.title}</span><span class="index-year">${p.year}</span><span class="index-type">${p.type}</span>`;
-  li.addEventListener('click', () => goToSlide(p.slideId));
-  indexList.appendChild(li);
+  li.dataset.id = p.id;
+  li.innerHTML = `<span class="n">${String(i + 1).padStart(2, '0')}</span><span class="t">${p.title}</span><span class="y">${p.year}</span>`;
+  projectList.appendChild(li);
 });
 
-// ── Navigation ──
-const slides = Array.from(document.querySelectorAll('.slide'));
-const total = slides.length;
-let current = 0;
+// ── 아카이브 렌더링 ──
+const archiveView = document.getElementById('archive-view');
 
-const progress = document.getElementById('progress');
-const counter  = document.getElementById('counter');
+// 좌우 컬럼 생성
+const colLeft  = document.createElement('div');
+const colRight = document.createElement('div');
+colLeft.className  = 'archive-col';
+colRight.className = 'archive-col';
+archiveView.appendChild(colLeft);
+archiveView.appendChild(colRight);
 
-function goTo(n) {
-  if (n < 0 || n >= total) return;
-  slides[current].classList.remove('active');
-  current = n;
-  slides[current].classList.add('active');
-  progress.style.width = ((current / (total - 1)) * 100) + '%';
-  counter.textContent = String(current + 1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+PROJECTS.forEach((p, i) => {
+  const div = document.createElement('div');
+  div.className = 'archive-item';
+  div.id = 'arc-' + p.id;
+
+  // thumb 파일명: p.thumb 있으면 그것, 없으면 thumb.jpg
+  const tFile = p.thumb || 'thumb.jpg';
+
+  const thumbDiv = document.createElement('div');
+  thumbDiv.className = 'archive-thumb';
+  const tImg = lazyImg('./images/works/' + p.folder + '/' + tFile, p.title);
+  thumbDiv.appendChild(tImg);
+  requestAnimationFrame(() => observeThumb(tImg));
+
+  div.innerHTML = `
+    <div class="archive-row">
+      <div>
+        <div class="a-title">${p.title}</div>
+        <div class="a-sub">${p.year} — ${p.type}</div>
+      </div>
+    </div>`;
+  div.insertBefore(thumbDiv, div.firstChild);
+
+  // 홀수: 왼쪽, 짝수: 오른쪽
+  (i % 2 === 0 ? colLeft : colRight).appendChild(div);
+});
+
+// ── 상세뷰 렌더링 함수 ──
+function renderDetail(p) {
+  const container = document.getElementById('detail-images');
+  container.innerHTML = '';
+
+  const base = './images/works/' + p.folder + '/';
+
+  if (p.layout === 'default' || p.layout === 'bds') {
+    // bds는 hover 스왑 포함하되, 일단 세로 나열 (hover CSS가 처리)
+    const wrap = document.createElement('div');
+
+    if (p.layout === 'bds' && p.hover) {
+      wrap.className = 'layout-hover'; // hover 레이아웃 재사용
+      p.hover.forEach(([b, h]) => {
+        const cell = document.createElement('div');
+        cell.className = 'd-img-wrap';
+        const imgBase  = lazyImg(base + b, p.title, 'img-base');
+        const imgHover = lazyImg(base + h, p.title, 'img-hover');
+        imgHover.classList.add('loaded'); // hover img는 미리 로드 트리거
+        cell.appendChild(imgBase);
+        cell.appendChild(imgHover);
+        wrap.appendChild(cell);
+      });
+      // 마지막 이미지 (hover 쌍 없는 것)
+      if (p.images && p.images.length > p.hover.length) {
+        p.images.slice(p.hover.length).forEach(f => {
+          const cell = document.createElement('div');
+          cell.className = 'd-img-wrap';
+          cell.appendChild(lazyImg(base + f, p.title));
+          wrap.appendChild(cell);
+        });
+      }
+    } else {
+      wrap.className = 'layout-default';
+      (p.images || []).forEach(f => {
+        const cell = document.createElement('div');
+        cell.className = 'd-img-wrap';
+        cell.appendChild(lazyImg(base + f, p.title));
+        wrap.appendChild(cell);
+      });
+    }
+    container.appendChild(wrap);
+
+  } else if (p.layout === 'bds_custom') {
+    // hover 파일 없음, 3열 그리드
+    const wrap = document.createElement('div');
+    wrap.className = 'layout-bds';
+    (p.images || []).forEach(f => {
+      const cell = document.createElement('div');
+      cell.className = 'd-img-wrap';
+      cell.appendChild(lazyImg(base + f, p.title));
+      wrap.appendChild(cell);
+    });
+    container.appendChild(wrap);
+
+  } else if (p.layout === 'hoonies') {
+    // 2열, 7번째만 전체너비
+    const wrap = document.createElement('div');
+    wrap.className = 'layout-hoonies';
+    (p.images || []).forEach((f, idx) => {
+      const cell = document.createElement('div');
+      cell.className = 'd-img-wrap' + (idx === 6 ? ' full-row' : '');
+      cell.appendChild(lazyImg(base + f, p.title));
+      wrap.appendChild(cell);
+    });
+    container.appendChild(wrap);
+
+  } else if (p.layout === 'nondry') {
+    // 4열 그리드
+    const wrap = document.createElement('div');
+    wrap.className = 'layout-nondry';
+    (p.images || []).forEach(f => {
+      const cell = document.createElement('div');
+      cell.className = 'd-img-wrap';
+      cell.appendChild(lazyImg(base + f, p.title));
+      wrap.appendChild(cell);
+    });
+    container.appendChild(wrap);
+
+  } else if (p.layout === 'grid2') {
+    const wrap = document.createElement('div');
+    wrap.className = 'layout-grid2';
+    (p.images || []).forEach(f => {
+      const cell = document.createElement('div');
+      cell.className = 'd-img-wrap';
+      cell.appendChild(lazyImg(base + f, p.title));
+      wrap.appendChild(cell);
+    });
+    container.appendChild(wrap);
+
+  } else if (p.layout === 'confessions') {
+    // 1~12: 4열 클릭 뒤집기
+    const wrap1 = document.createElement('div');
+    wrap1.className = 'layout-confessions';
+    (p.hover || []).forEach(([b, h]) => {
+      const cell = document.createElement('div');
+      cell.className = 'd-img-wrap';
+      const inner = document.createElement('div');
+      inner.className = 'flip-inner';
+      inner.appendChild(lazyImg(base + b, p.title, 'img-base'));
+      inner.appendChild(lazyImg(base + h, p.title, 'img-hover'));
+      cell.appendChild(inner);
+      cell.addEventListener('click', () => cell.classList.toggle('flipped'));
+      wrap1.appendChild(cell);
+    });
+    container.appendChild(wrap1);
+
+    // 13~24: 4열 일반 (모바일에서 2열)
+    if (p.images2 && p.images2.length) {
+      const gap = document.createElement('div');
+      gap.style.height = '24px';
+      container.appendChild(gap);
+      const wrap2 = document.createElement('div');
+      wrap2.className = 'layout-confessions layout-confessions-wide';
+      p.images2.forEach(f => {
+        const cell = document.createElement('div');
+        cell.className = 'd-img-wrap';
+        const inner = document.createElement('div');
+        inner.className = 'flip-inner';
+        inner.appendChild(lazyImg(base + f, p.title));
+        cell.appendChild(inner);
+        wrap2.appendChild(cell);
+      });
+      container.appendChild(wrap2);
+    }
+
+  } else if (p.layout === 'hover') {
+    const wrap = document.createElement('div');
+    wrap.className = 'layout-hover';
+    (p.hover || []).forEach(([b, h]) => {
+      const cell = document.createElement('div');
+      cell.className = 'd-img-wrap';
+      const imgBase  = lazyImg(base + b, p.title, 'img-base');
+      const imgHover = lazyImg(base + h, p.title, 'img-hover');
+      cell.appendChild(imgBase);
+      cell.appendChild(imgHover);
+      wrap.appendChild(cell);
+    });
+    container.appendChild(wrap);
+
+  } else if (p.layout === 'jumble1') {
+    const wrap = document.createElement('div');
+    wrap.className = 'layout-jumble1';
+    (p.images || []).forEach(f => {
+      const cell = document.createElement('div');
+      cell.className = 'd-img-wrap';
+      cell.appendChild(lazyImg(base + f, p.title));
+      wrap.appendChild(cell);
+    });
+    container.appendChild(wrap);
+
+  } else if (p.layout === 'jumble2') {
+    const imgs = p.images || [];
+    const wrap = document.createElement('div');
+    wrap.className = 'layout-jumble2';
+    let i = 0, first = true;
+    while (i < imgs.length) {
+      const rowSize = first ? 3 : 2;
+      first = false;
+      const row = document.createElement('div');
+      row.className = 'j2-row ' + (rowSize === 3 ? 'cols3' : 'cols2');
+      imgs.slice(i, i + rowSize).forEach(f => {
+        const cell = document.createElement('div');
+        cell.className = 'd-img-wrap';
+        cell.appendChild(lazyImg(base + f, p.title));
+        row.appendChild(cell);
+      });
+      wrap.appendChild(row);
+      i += rowSize;
+    }
+    container.appendChild(wrap);
+
+  } else if (p.layout === 'gorillas') {
+    const wrap = document.createElement('div');
+    wrap.className = 'layout-gorillas';
+    (p.images || []).forEach((f, idx) => {
+      const cell = document.createElement('div');
+      cell.className = 'd-img-wrap' + (idx % 2 === 0 ? ' odd' : '');
+      cell.appendChild(lazyImg(base + f, p.title));
+      wrap.appendChild(cell);
+    });
+    container.appendChild(wrap);
+
+  } else if (p.layout === 'reconstruction') {
+    const wrap = document.createElement('div');
+    wrap.className = 'layout-reconstruction';
+
+    const col1 = document.createElement('div');
+    col1.className = 'recon-col';
+    const lbl1 = document.createElement('div');
+    lbl1.className = 'recon-label';
+    lbl1.textContent = 'Graphic';
+    col1.appendChild(lbl1);
+    (p.images || []).forEach(f => {
+      const cell = document.createElement('div');
+      cell.className = 'd-img-wrap';
+      cell.appendChild(lazyImg(base + f, p.title));
+      col1.appendChild(cell);
+    });
+
+    const col2 = document.createElement('div');
+    col2.className = 'recon-col';
+    const lbl2 = document.createElement('div');
+    lbl2.className = 'recon-label';
+    lbl2.textContent = 'Photo';
+    col2.appendChild(lbl2);
+    (p.images2 || []).forEach(f => {
+      const cell = document.createElement('div');
+      cell.className = 'd-img-wrap';
+      cell.appendChild(lazyImg(base + f, p.title));
+      col2.appendChild(cell);
+    });
+
+    wrap.appendChild(col1);
+    wrap.appendChild(col2);
+    container.appendChild(wrap);
+
+  } else if (p.layout === 'iframe') {
+    const wrap = document.createElement('div');
+    wrap.className = 'layout-iframe';
+    (p.iframes || []).forEach(item => {
+      const cell = document.createElement('div');
+      cell.className = 'iframe-cell';
+      if (item.label) {
+        const lbl = document.createElement('div');
+        lbl.className = 'iframe-label';
+        lbl.textContent = item.label;
+        cell.appendChild(lbl);
+      }
+      const frame = document.createElement('iframe');
+      frame.src = './images/works/' + p.folder + '/' + item.src;
+      frame.allow = 'autoplay';
+      frame.loading = 'lazy';
+      cell.appendChild(frame);
+      wrap.appendChild(cell);
+    });
+    container.appendChild(wrap);
+  }
 }
 
-function goToSlide(id) {
-  const idx = slides.findIndex(s => s.id === id);
-  if (idx >= 0) goTo(idx);
+// ── Works 인터랙션 ──
+const worksRight   = document.getElementById('works-right');
+const detailView   = document.getElementById('detail-view');
+const listItems    = () => Array.from(document.querySelectorAll('#project-list li'));
+const archiveItems = () => Array.from(document.querySelectorAll('.archive-item'));
+
+function showArchive(scrollToId) {
+  archiveView.style.display = '';
+  detailView.classList.remove('show');
+  requestAnimationFrame(() => {
+    if (scrollToId) {
+      const t = document.getElementById('arc-' + scrollToId);
+      if (t) worksRight.scrollTop = t.offsetTop;
+    } else {
+      worksRight.scrollTop = 0;
+    }
+  });
 }
 
-goTo(0);
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') goTo(current + 1);
-  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    goTo(current - 1);
+// 좌측 리스트 클릭
+projectList.addEventListener('click', e => {
+  const li = e.target.closest('li');
+  if (!li) return;
+  const id = li.dataset.id;
+  listItems().forEach(x => x.classList.remove('active'));
+  li.classList.add('active');
+  // 모바일: Grid 패널로 전환
+  if (isMobile()) setMobilePanel('grid');
+  if (detailView.classList.contains('show')) { showArchive(id); return; }
+  const target = document.getElementById('arc-' + id);
+  if (target) worksRight.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
 });
 
-// click right half = next, left half = prev
-document.getElementById('deck').addEventListener('click', e => {
-  if (e.target.tagName === 'A' || e.target.tagName === 'LI') return;
-  if (e.clientX > window.innerWidth / 2) goTo(current + 1);
-  else goTo(current - 1);
+// 우측 스크롤 → 좌측 active 동기화
+let scrollTicking = false;
+worksRight.addEventListener('scroll', () => {
+  if (scrollTicking || detailView.classList.contains('show')) return;
+  scrollTicking = true;
+  requestAnimationFrame(() => {
+    const items = archiveItems();
+    if (!items.length) { scrollTicking = false; return; }
+    const threshold = worksRight.scrollTop + worksRight.clientHeight * 0.25;
+    let current = items[0].id.replace('arc-', '');
+    for (const item of items) {
+      if (item.offsetTop <= threshold) current = item.id.replace('arc-', '');
+      else break;
+    }
+    listItems().forEach(li => {
+      const active = li.dataset.id === current;
+      li.classList.toggle('active', active);
+      if (active) li.scrollIntoView({ block: 'nearest' });
+    });
+    scrollTicking = false;
+  });
 });
 
-// Touch swipe
-let tx = 0;
-document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-document.addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - tx;
-  if (Math.abs(dx) > 40) dx < 0 ? goTo(current + 1) : goTo(current - 1);
-}, { passive: true });
+// 아카이브 아이템 클릭 → 상세뷰
+archiveView.addEventListener('click', e => {
+  const item = e.target.closest('.archive-item');
+  if (!item) return;
+  const id = item.id.replace('arc-', '');
+  const p  = PROJECTS.find(x => x.id === id);
+  if (!p) return;
+
+  document.getElementById('d-title').textContent = p.title;
+  document.getElementById('d-sub').textContent   = p.year + ' — ' + p.type;
+  document.getElementById('d-year').textContent  = p.year;
+  document.getElementById('d-type').textContent  = p.type;
+
+  renderDetail(p);
+
+  // 상세뷰 이미지 lazy observer 등록
+  document.querySelectorAll('#detail-images img[data-src]').forEach(img => getDetailObserver().observe(img));
+
+  archiveView.style.display = 'none';
+  detailView.classList.add('show');
+  worksRight.scrollTop = 0;
+  listItems().forEach(li => li.classList.toggle('active', li.dataset.id === id));
+});
+
+document.getElementById('detail-back').addEventListener('click', () => showArchive());
+
+// ── 홈 이미지 lazy load ──
+const homeImg = document.querySelector('#home .home-img img');
+if (homeImg) {
+  homeImg.src = homeImg.dataset.src;
+  homeImg.onload = () => homeImg.classList.add('loaded');
+}
+
+// ── Page nav ──
+function navigateTo(pageId) {
+  var validPages = ['home','works','ceramic','misc','info'];
+  if (!validPages.includes(pageId)) pageId = 'home';
+  document.querySelectorAll('nav.topnav a[data-page]').forEach(x => x.classList.remove('active'));
+  var navLink = document.querySelector('nav.topnav a[data-page="' + pageId + '"]');
+  if (navLink) navLink.classList.add('active');
+  document.querySelectorAll('main.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  document.body.classList.toggle('home-active', pageId === 'home');
+  if (pageId === 'ceramic' && !window.__CERAMIC_CANVAS_READY__) {
+    window.__CERAMIC_CANVAS_READY__ = true;
+    requestAnimationFrame(() => { if (window.__CERAMIC_START__) window.__CERAMIC_START__(); });
+  }
+  if (pageId === 'works') initMobileWorksPanel();
+  if (pageId === 'misc') requestAnimationFrame(function(){ if(window.__MISC_START__) window.__MISC_START__(); });
+}
+
+document.querySelectorAll('nav.topnav a[data-page]').forEach(a => {
+  a.addEventListener('click', () => {
+    var pageId = a.dataset.page;
+    location.hash = pageId;
+    navigateTo(pageId);
+    // 드롭다운 메뉴 안 링크 클릭 시 메뉴 닫기
+    document.getElementById('side-menu').classList.remove('open');
+  });
+});
+
+// ── Side 드롭다운 ──
+(function() {
+  var trigger = document.getElementById('side-trigger');
+  var menu    = document.getElementById('side-menu');
+
+  trigger.addEventListener('click', function(e) {
+    e.stopPropagation();
+    menu.classList.toggle('open');
+  });
+
+  // 외부 클릭 시 닫기
+  document.addEventListener('click', function() {
+    menu.classList.remove('open');
+  });
+
+  // Ceramic이 active일 때 trigger도 active 처리
+  var origNav = navigateTo;
+  navigateTo = function(pageId) {
+    origNav(pageId);
+    trigger.classList.toggle('active', pageId === 'ceramic');
+  };
+})();
+
+// 초기 로드 — hash 있으면 그 탭으로
+(function() {
+  var hash = location.hash.replace('#','');
+  navigateTo(hash || 'home');
+})();
+
+// ── 모바일 Works 탭 토글 ──
+function isMobile() { return window.innerWidth <= 800; }
+
+function initMobileWorksPanel() {
+  if (!isMobile()) return;
+  var listPanel  = document.getElementById('works-list-panel');
+  var rightPanel = document.getElementById('works-right');
+  // 현재 active 버튼 기준으로 패널 세팅
+  var activeBtn = document.querySelector('#works-mobile-tabs button.active');
+  var which = activeBtn ? activeBtn.dataset.panel : 'list';
+  setMobilePanel(which);
+}
+
+function setMobilePanel(which) {
+  var listPanel  = document.getElementById('works-list-panel');
+  var rightPanel = document.getElementById('works-right');
+  document.querySelectorAll('#works-mobile-tabs button').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.panel === which);
+  });
+  if (which === 'list') {
+    listPanel.classList.add('mob-active');
+    rightPanel.classList.remove('mob-active');
+  } else {
+    listPanel.classList.remove('mob-active');
+    rightPanel.classList.add('mob-active');
+  }
+}
+
+document.querySelectorAll('#works-mobile-tabs button').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    setMobilePanel(btn.dataset.panel);
+  });
+});
+
+// 상세뷰 Back: 기존 리스너(showArchive)가 처리
+
+// 초기 로드 시 모바일이면 패널 세팅
+if (isMobile()) setMobilePanel('list');
+
+// ── 커스텀 커서 ──
+const cursorEl = document.getElementById('cursor');
+const coordsEl = document.getElementById('coords');
+let coordTimer = null;
+document.addEventListener('mousemove', e => {
+  const mx = e.clientX, my = e.clientY;
+  cursorEl.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+  coordsEl.classList.remove('visible');
+  clearTimeout(coordTimer);
+  coordTimer = setTimeout(() => {
+    coordsEl.textContent = `${String(mx).padStart(4,'0')} / ${String(my).padStart(4,'0')}`;
+    coordsEl.style.transform = `translate(${mx + 14}px, ${my + 14}px)`;
+    coordsEl.classList.add('visible');
+  }, 1000);
+});
+document.addEventListener('mouseleave', () => {
+  cursorEl.style.opacity = '0';
+  clearTimeout(coordTimer);
+  coordsEl.classList.remove('visible');
+});
+document.addEventListener('mouseenter', () => { cursorEl.style.opacity = '1'; });
+document.addEventListener('mouseover', e => {
+  if (e.target.closest('a, li, button, .kk-trigger')) cursorEl.classList.add('on-link');
+});
+document.addEventListener('mouseout', e => {
+  if (e.target.closest('a, li, button, .kk-trigger')) cursorEl.classList.remove('on-link');
+});
+document.addEventListener('mousedown', e => {
+  if (e.target.closest('a, li, button, .kk-trigger')) {
+    cursorEl.classList.remove('on-link');
+    cursorEl.classList.add('on-link-active');
+  }
+});
+document.addEventListener('mouseup', () => cursorEl.classList.remove('on-link-active'));
+
+// ── 타이핑 이스터에그 ──
+const overlay = document.getElementById('typewriter-overlay');
+const twText  = document.getElementById('typewriter-text');
+const TW_LINES = [
+  "graphic designer\nbased in seoul.",
+  "working with type,\nimage, and material.",
+  "available for commissions\nfrom june 2026.",
+  "kwonkihun-kiki.github.io/web",
+  "99liner.\nseoul-based.",
+];
+let twIndex = 0, twActive = false, twTO = null, twCTO = null;
+
+function typeWriter(text, onDone) {
+  twText.classList.remove('done');
+  twText.textContent = '';
+  let i = 0;
+  function next() {
+    if (i < text.length) { twText.textContent += text[i++]; twCTO = setTimeout(next, 38); }
+    else { twText.classList.add('done'); if (onDone) onDone(); }
+  }
+  next();
+}
+function triggerTypewriter() {
+  if (twActive) return;
+  twActive = true;
+  clearTimeout(twTO); clearTimeout(twCTO);
+  overlay.classList.add('show');
+  typeWriter(TW_LINES[twIndex++ % TW_LINES.length], () => {
+    twTO = setTimeout(() => {
+      overlay.classList.remove('show');
+      setTimeout(() => { twActive = false; }, 280);
+    }, 2200);
+  });
+}
+document.querySelectorAll('.kk-trigger').forEach(el => el.addEventListener('click', triggerTypewriter));
+
+// Info Bio Kihun Kwon wrap
+document.querySelectorAll('.ig-val p').forEach(p => {
+  if (p.innerHTML.includes('Kihun Kwon')) {
+    p.innerHTML = p.innerHTML.replace(
+      /Kihun Kwon/g,
+      '<span class="kk-trigger" style="border-bottom:0.5px solid var(--dim);padding-bottom:1px">Kihun Kwon</span>'
+    );
+  }
+});
+document.querySelectorAll('.ig-val .kk-trigger').forEach(el => el.addEventListener('click', triggerTypewriter));
+
+
+
+
+
+
+
+
+
+// ── MISC 페이지 ──
+(function() {
+
+  var FILES = [
+    './images/works/free/01.jpg',
+    './images/works/free/03.jpg',
+    './images/works/free/05.jpg',
+    './images/works/free/06.jpg',
+    './images/works/free/10.jpg',
+    './images/works/free/hoir.jpg',
+    './images/works/free/chair.jpg',
+    './images/works/free/Asset 1.jpg',
+    './images/works/free/KakaoTalk_20220401_140538636.jpg',
+    './images/works/free/smiley/01.jpg',
+    './images/works/free/smiley/02.jpg',
+    './images/works/free/smiley/03.jpg',
+    './images/works/free/stickers/02.jpg',
+    './images/works/free/stickers/03.jpg',
+    './images/works/free/stickers/04.jpg',
+    './images/works/free/stickers/05.jpg',
+    './images/works/free/stickers/07.jpg',
+  ];
+
+  var LINES = [
+    "hey.", "...", "ouch.", "stop.", "not you again.",
+    "please.", "ow.", "ok ok.", "nope.", "why.",
+    "don't.", "too close.", "baaaa.", "leave me alone.",
+    "seriously?", "ugh.", "fine.", "i'm just standing here.",
+    "not me.", "again?", "ok i'm moving.", "bye.",
+  ];
+
+  var miscPage = document.getElementById('misc');
+  var field    = document.getElementById('misc-field');
+  var items    = [];
+  var RAF      = null;
+  var ready    = false;
+  var mouse    = { x: -9999, y: -9999 };
+
+  var REPEL   = 100;
+  var REPEL_F = 18;
+  var RETURN  = 0.10;
+  var DAMP    = 0.78;
+
+  function getLayout() {
+    var vw   = window.innerWidth;
+    var imgW = vw <= 480 ? 48 : (vw <= 800 ? 58 : 72);
+    var gap  = vw <= 480 ? 10 : 14;
+    var padX = vw <= 480 ? 16 : 24;
+    var padY = vw <= 480 ? 20 : 28;
+    // 실제 사용 가능한 너비로 cols 계산
+    var avail = vw - padX * 2;
+    var cols  = Math.max(1, Math.floor((avail + gap) / (imgW + gap)));
+    return { imgW: imgW, gap: gap, padX: padX, padY: padY, cols: cols };
+  }
+
+  function initItems() {
+    field.innerHTML = '';
+    items = [];
+
+    var L     = getLayout();
+    var IMG_W = L.imgW;
+    var gap   = L.gap;
+    var padX  = L.padX;
+    var padY  = L.padY;
+    var cols  = L.cols;
+    var rowH  = IMG_W + gap * 2.5; // 행 높이 (세로 여백 포함)
+
+    FILES.forEach(function(src, i) {
+      var col = i % cols;
+      var row = Math.floor(i / cols);
+      var ox  = padX + col * (IMG_W + gap) + IMG_W / 2;
+      var oy  = padY + row * rowH + IMG_W / 2;
+
+      var el = document.createElement('img');
+      el.src = src;
+      el.draggable = false;
+      el.style.cssText = [
+        'position:absolute',
+        'width:' + IMG_W + 'px',
+        'height:auto',
+        'pointer-events:none',
+        'will-change:transform',
+        'display:block',
+      ].join(';');
+      field.appendChild(el);
+
+      var bubble = document.createElement('div');
+      bubble.style.cssText = [
+        'position:absolute',
+        'font-family:"JetBrains Mono",monospace',
+        'font-size:9px', 'color:#555',
+        'white-space:nowrap', 'pointer-events:none',
+        'opacity:0', 'letter-spacing:0.03em', 'z-index:10',
+      ].join(';');
+      field.appendChild(bubble);
+
+      items.push({
+        el: el, bubble: bubble,
+        ox: ox, oy: oy, x: ox, y: oy,
+        vx: 0, vy: 0, imgW: IMG_W,
+        talking: 0,
+        currentLine: LINES[Math.floor(Math.random() * LINES.length)],
+        wasClose: false,
+      });
+    });
+
+    // field 높이 설정
+    var rows  = Math.ceil(FILES.length / cols);
+    field.style.height = (padY + rows * rowH + padY) + 'px';
+  }
+
+  function tick() {
+    RAF = requestAnimationFrame(tick);
+
+    var dists = items.map(function(it, i) {
+      return { i: i, d: Math.hypot(it.x - mouse.x, it.y - mouse.y) };
+    });
+    dists.sort(function(a, b) { return a.d - b.d; });
+    var talkers = {};
+    dists.slice(0, 2).forEach(function(o) {
+      if (o.d < REPEL * 1.3) talkers[o.i] = true;
+    });
+
+    items.forEach(function(it, i) {
+      var dx = it.x - mouse.x, dy = it.y - mouse.y;
+      var dist = Math.sqrt(dx*dx + dy*dy);
+      var isClose = !!talkers[i];
+
+      if (isClose && !it.wasClose) {
+        it.currentLine = LINES[Math.floor(Math.random() * LINES.length)];
+        it.bubble.textContent = it.currentLine;
+      }
+      it.wasClose = isClose;
+
+      if (dist < REPEL && dist > 1) {
+        var f = Math.pow((REPEL - dist) / REPEL, 1.3);
+        it.vx += (dx / dist) * f * REPEL_F * 0.05;
+        it.vy += (dy / dist) * f * REPEL_F * 0.05;
+      }
+      it.vx += (it.ox - it.x) * RETURN;
+      it.vy += (it.oy - it.y) * RETURN;
+      it.vx *= DAMP; it.vy *= DAMP;
+      it.x  += it.vx; it.y  += it.vy;
+
+      var iw = it.imgW;
+      var ih = it.el.offsetHeight || iw;
+      it.el.style.left = (it.x - iw/2) + 'px';
+      it.el.style.top  = (it.y - ih/2) + 'px';
+
+      it.talking = isClose ? Math.min(1, it.talking + 0.10) : Math.max(0, it.talking - 0.06);
+      it.bubble.style.opacity = it.talking > 0.01 ? it.talking : 0;
+      it.bubble.style.left = (it.x + iw/2 + 4) + 'px';
+      it.bubble.style.top  = (it.y - ih/2 - 2) + 'px';
+    });
+  }
+
+  miscPage.addEventListener('mousemove', function(e) {
+    var r = field.getBoundingClientRect();
+    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+  });
+  miscPage.addEventListener('mouseleave', function() { mouse.x=-9999; mouse.y=-9999; });
+  miscPage.addEventListener('touchmove', function(e) {
+    e.preventDefault();
+    var r = field.getBoundingClientRect();
+    mouse.x = e.touches[0].clientX - r.left;
+    mouse.y = e.touches[0].clientY - r.top;
+  }, { passive: false });
+  miscPage.addEventListener('touchend', function() { mouse.x=-9999; mouse.y=-9999; });
+
+  function startMisc() {
+    if (RAF) return;
+    if (!ready) { initItems(); ready = true; }
+    tick();
+  }
+  function stopMisc() {
+    if (RAF) { cancelAnimationFrame(RAF); RAF = null; }
+  }
+
+  // 전역 노출 — hash 진입 시 사용
+  window.__MISC_START__ = startMisc;
+  window.__MISC_STOP__  = stopMisc;
+
+  document.querySelectorAll('nav.topnav a[data-page]').forEach(function(a) {
+    a.addEventListener('click', function() {
+      if (a.dataset.page === 'misc') { requestAnimationFrame(function(){ startMisc(); }); }
+      else { stopMisc(); }
+    });
+  });
+
+  window.addEventListener('resize', function() {
+    if (document.getElementById('misc').classList.contains('active')) {
+      ready = false; stopMisc(); startMisc();
+    }
+  });
+
+})();
 </script>
 </body>
 </html>
